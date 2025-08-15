@@ -1,17 +1,18 @@
 import React from "react";
 import Editor from "@monaco-editor/react";
 
-function CodeEditor({ code, onChange }) {
+function CodeEditor({ code, onChange, readOnly = false }) {
   return (
     <Editor
       height="70vh"
       defaultLanguage="javascript"
       value={code}
-      onChange={onChange}
+      onChange={readOnly ? undefined : onChange}
       theme="vs-dark"
       options={{
         fontSize: 14,
-        minimap: { enabled: false }
+        minimap: { enabled: false },
+        readOnly: readOnly
       }}
     />
   );

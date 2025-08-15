@@ -31,7 +31,7 @@ function createRoom({id,name}){
     name: name || `Room-${id}`,
     players:[],
     createdAt: Date.now(),
-    code:null,
+    codes:{},
 
   }
   rooms.set(id,room);
@@ -72,6 +72,15 @@ function removeRoomIfEmpty(roomId) {
   }
 }
 
+function findRoomIdBySocket(socketId) {
+  for (const [roomId, room] of rooms.entries()) {
+    if (room.players.some(p => p.socketId === socketId)) {
+      return roomId;
+    }
+  }
+  return null;
+}
+
 
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
@@ -81,7 +90,7 @@ io.on("connection", (socket) => {
         return callback?.({ ok: false, error: "roomId or username is required" });
     }
 
-    let room = getRoom(roomId) || createRoom({ id: roomId });
+    let room = getRoom(roomId) || createRoom({ id: roomId, name: `Room-${roomId}` });
 
     // Check if room already has 4 players
     if (room.players && room.players.length >= 4) {
@@ -91,16 +100,19 @@ io.on("connection", (socket) => {
     socket.join(roomId);
     joinRoom(roomId, socket.id, username);
 
+    // Create an empty playground for this player
+    if (!room.codes) room.codes = {};
+    room.codes[socket.id] = "// Start coding here...\n";
+
+    // Send player list
     const playerList = (getRoom(roomId)?.players || []).map(p => ({
         socketId: p.socketId,
         username: p.username
     }));
-
     io.to(roomId).emit("player-list", playerList);
 
-    if (room.code) {
-        socket.emit("code-update", room.code);
-    }
+    // Send all playground codes to the newly joined player
+    socket.emit("all-codes", room.codes);
 
     console.log(`Socket ${socket.id} joined room ${roomId} as ${username}`);
     callback?.({ ok: true, room: { id: roomId, name: room.name } });
@@ -120,14 +132,11 @@ io.on("connection", (socket) => {
     removeRoomIfEmpty(roomId);
     callback?.({ok:true});
   });
-  socket.on("room-code-update",({roomId,code}) =>{
-    const room = getRoom(roomId);
-    if(room){
-      room.code = code;
-    }
-    socket.to(roomId).emit("code-update",code);
-
+  socket.on("room-code-update", ({ roomId, code }) => {
+    // Send the code to everyone else in the same room
+    socket.to(roomId).emit("code-update", code);
   });
+  
   socket.on("start-match", ({ roomId }) => {
     // Simple example: broadcast start-match to room
     io.to(roomId).emit("match-started", { startedAt: Date.now() });
@@ -148,10 +157,35 @@ io.on("connection", (socket) => {
       removeRoomIfEmpty(roomId);
     }
   });
+  socket.on("code-change", ({ roomId, code }) => {
+    const room = getRoom(roomId);
+    if (!room || !room.codes) return;
 
+    // Update only the sender's playground
+    room.codes[socket.id] = code;
+
+    // Broadcast updated codes to everyone
+    io.to(roomId).emit("all-codes", room.codes);
+});
 
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
+    const roomId = findRoomIdBySocket(socket.id);
+    if (roomId) {
+        const room = getRoom(roomId);
+        if (room) {
+            room.players = room.players.filter(p => p.socketId !== socket.id);
+            delete room.codes[socket.id];
+
+            // Send updated player list & codes
+            const playerList = room.players.map(p => ({
+                socketId: p.socketId,
+                username: p.username
+            }));
+            io.to(roomId).emit("player-list", playerList);
+            io.to(roomId).emit("all-codes", room.codes);
+        }
+    }
   });
 });
 
