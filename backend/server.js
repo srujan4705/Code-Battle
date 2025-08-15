@@ -22,18 +22,150 @@ const io = new Server(server, {
   }
 });
 
-io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
+// rooms
+const rooms = new Map();
+function createRoom({id,name}){
+  if(!id) throw new Error("room id Required");
+  const room ={
+    id,
+    name: name || `Room-${id}`,
+    players:[],
+    createdAt: Date.now(),
+    code:null,
 
-  socket.on("code-update", (newCode) => {
-    socket.broadcast.emit("code-update", newCode);
+  }
+  rooms.set(id,room);
+  return room;
+}
+function getRoom(id){
+  return rooms.get(id)
+}
+function listRooms(){
+  return Array.from(rooms.values()).map(r => ({
+    id:r.id,
+    name:r.name,
+    playersCount:r.players.length,
+    createdAt:r.createdAt,
+
+  }));
+}
+function joinRoom(roomId, socketId, username) {
+  const room = getRoom(roomId);
+  if (!room) return null;
+  // avoid duplicate
+  if (!room.players.find(p => p.socketId === socketId)) {
+    room.players.push({ socketId, username });
+  }
+  return room;
+}
+function leaveRoom(roomId, socketId) {
+  const room = getRoom(roomId);
+  if (!room) return null;
+  room.players = room.players.filter(p => p.socketId !== socketId);
+  return room;
+}
+
+function removeRoomIfEmpty(roomId) {
+  const room = getRoom(roomId);
+  if (room && room.players.length === 0) {
+    rooms.delete(roomId);
+  }
+}
+
+
+io.on("connection", (socket) => {
+  console.log("User connected:", socket.id);
+
+  socket.on("join-room", ({ roomId, username }, callback) => {
+    if (!roomId || !username) {
+        return callback?.({ ok: false, error: "roomId or username is required" });
+    }
+
+    let room = getRoom(roomId) || createRoom({ id: roomId });
+
+    // Check if room already has 4 players
+    if (room.players && room.players.length >= 4) {
+        return callback?.({ ok: false, error: "Room is full (max 4 players)" });
+    }
+
+    socket.join(roomId);
+    joinRoom(roomId, socket.id, username);
+
+    const playerList = (getRoom(roomId)?.players || []).map(p => ({
+        socketId: p.socketId,
+        username: p.username
+    }));
+
+    io.to(roomId).emit("player-list", playerList);
+
+    if (room.code) {
+        socket.emit("code-update", room.code);
+    }
+
+    console.log(`Socket ${socket.id} joined room ${roomId} as ${username}`);
+    callback?.({ ok: true, room: { id: roomId, name: room.name } });
   });
 
+  socket.on("leave-room",({roomId},callback) =>{
+    socket.leave(roomId);
+    leaveRoom(roomId,socket.id);
+    const room = getRoom(roomId);
+    if(room){
+      io.to(roomId).emit("room-players",room.players);
+
+    }else{
+      io.emit("room-removed",roomId);
+
+    }
+    removeRoomIfEmpty(roomId);
+    callback?.({ok:true});
+  });
+  socket.on("room-code-update",({roomId,code}) =>{
+    const room = getRoom(roomId);
+    if(room){
+      room.code = code;
+    }
+    socket.to(roomId).emit("code-update",code);
+
+  });
+  socket.on("start-match", ({ roomId }) => {
+    // Simple example: broadcast start-match to room
+    io.to(roomId).emit("match-started", { startedAt: Date.now() });
+  });
+
+  // When socket disconnects, remove from any rooms they were in
+  socket.on("disconnecting", () => {
+    // socket.rooms is a Set including socket.id and joined rooms
+    for (const roomId of socket.rooms) {
+      if (roomId === socket.id) continue; // skip personal room
+      leaveRoom(roomId, socket.id);
+      const room = getRoom(roomId);
+      if (room) {
+        io.to(roomId).emit("room-players", room.players);
+      } else {
+        io.emit("room-removed", roomId);
+      }
+      removeRoomIfEmpty(roomId);
+    }
+  });
+
+
   socket.on("disconnect", () => {
-    console.log(`User disconnected: ${socket.id}`);
+    console.log("User disconnected:", socket.id);
   });
 });
 
+app.get("/api/rooms", (req, res) => {
+  res.json(listRooms());
+});
+
+app.post("/api/rooms", (req, res) => {
+  const { id, name } = req.body || {};
+  if (!id) return res.status(400).json({ error: "id required" });
+  if (rooms.has(id)) return res.status(409).json({ error: "room already exists" });
+  const room = createRoom({ id, name });
+  res.status(201).json({ room });
+});
 const PISTON_URL = process.env.PISTON_URL || "https://emkc.org/api/v2/piston";
 
 const runLimiter = rateLimit({
