@@ -13,7 +13,8 @@ function Room() {
 
   const [players, setPlayers] = useState([]);
   const [playerEditors, setPlayerEditors] = useState({}); // { playerId: code }
-
+  const [scores, setScores] = useState({});
+  const [matchStarted, setMatchStarted] = useState(false);
   useEffect(() => {
     // Join room
     socket.emit("join-room", { roomId, username }, (resp) => {
@@ -35,17 +36,40 @@ function Room() {
         });
         return updated;
       });
+      setScores((prev) => {
+        const updated = { ...prev };
+        list.forEach((p) => {
+          if (updated[p.socketId] == null) {
+            updated[p.socketId] = 0;
+          }
+        });
+        return updated;
+      });
     });
 
     // Listen for code changes from others
     socket.on("all-codes", (codes) => {
       setPlayerEditors(codes);
     });
+    socket.on("match-started", () => {
+      setMatchStarted(true);
+    });
+
+    socket.on("match-stopped", () => {
+      setMatchStarted(false);
+    });
+
+    socket.on("score-update", (updatedScores) => {
+      setScores(updatedScores);
+    });
 
     return () => {
       socket.emit("leave-room", { roomId });
       socket.off("player-list");
       socket.off("all-codes");
+      socket.off("match-started");
+      socket.off("match-stopped");
+      socket.off("score-update");
     };
   }, [roomId, username, navigate]);
 
@@ -56,11 +80,39 @@ function Room() {
     }));
     socket.emit("code-change", { roomId, code: value });
   };
+  const startMatch = () => {
+    socket.emit("start-match", { roomId });
+  };
+
+  const stopMatch = () => {
+    socket.emit("stop-match", { roomId });
+  };
 
   return (
     <div style={{ padding: "20px", height: "100vh", boxSizing: "border-box" }}>
       <h2>Room: {roomId}</h2>
       <p>Logged in as: {username}</p>
+      {/* Match controls */}
+      <div style={{ marginBottom: "10px" }}>
+        {!matchStarted ? (
+          <button onClick={startMatch}>Start Match</button>
+        ) : (
+          <button onClick={stopMatch}>Stop Match</button>
+        )}
+      </div>
+
+      {/* Scoreboard */}
+      <div style={{ marginBottom: "20px" }}>
+        <h3>Scores</h3>
+        <ul>
+          {players.map((p) => (
+            <li key={p.socketId}>
+              {p.username} ({p.socketId === socket.id ? "You" : ""}) :{" "}
+              {scores[p.socketId] ?? 0}
+            </li>
+          ))}
+        </ul>
+      </div>
 
       <div
         style={{

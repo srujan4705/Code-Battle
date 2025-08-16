@@ -24,6 +24,7 @@ const io = new Server(server, {
 
 // rooms
 const rooms = new Map();
+// inside createRoom function:
 function createRoom({id,name}){
   if(!id) throw new Error("room id Required");
   const room ={
@@ -32,11 +33,16 @@ function createRoom({id,name}){
     players:[],
     createdAt: Date.now(),
     codes:{},
-
+    match: { // NEW match state
+      started: false,
+      startedAt: null,
+      scores: {}, // { socketId: number }
+    }
   }
   rooms.set(id,room);
   return room;
 }
+
 function getRoom(id){
   return rooms.get(id)
 }
@@ -137,10 +143,47 @@ io.on("connection", (socket) => {
     socket.to(roomId).emit("code-update", code);
   });
   
+  // Start match
   socket.on("start-match", ({ roomId }) => {
-    // Simple example: broadcast start-match to room
-    io.to(roomId).emit("match-started", { startedAt: Date.now() });
+    const room = getRoom(roomId);
+    if (!room) return;
+
+    // Reset match state
+    room.match.started = true;
+    room.match.startedAt = Date.now();
+    room.match.scores = {};
+    room.players.forEach(p => {
+      room.match.scores[p.socketId] = 0; // everyone starts at 0
+    });
+
+    io.to(roomId).emit("match-started", { 
+      startedAt: room.match.startedAt,
+      scores: room.match.scores 
+    });
+
+    console.log(`Match started in room ${roomId}`);
   });
+
+  // Stop match
+  socket.on("stop-match", ({ roomId }) => {
+    const room = getRoom(roomId);
+    if (!room || !room.match.started) return;
+
+    room.match.started = false;
+
+    // Get winner(s)
+    const scores = room.match.scores || {};
+    const maxScore = Math.max(...Object.values(scores), 0);
+    const winners = Object.keys(scores).filter(id => scores[id] === maxScore);
+
+    io.to(roomId).emit("match-stopped", {
+      scores,
+      winners,
+    });
+
+    console.log(`Match stopped in room ${roomId}`);
+  });
+
 
   // When socket disconnects, remove from any rooms they were in
   socket.on("disconnecting", () => {
@@ -257,6 +300,14 @@ app.post("/api/run", runLimiter, async (req, res) => {
       compile_stderr: data?.compile?.stderr || "",
       compile_stdout: data?.compile?.stdout || "",
     };
+    // ✅ Award points if match is active
+    if (roomId && socketId) {
+      const room = getRoom(roomId);
+      if (room && room.match?.started && result.exitCode === 0) {
+        room.match.scores[socketId] = (room.match.scores[socketId] || 0) + 1;
+        io.to(roomId).emit("score-update", room.match.scores);
+      }
+    }
 
     res.json(result);
   } catch (err) {
