@@ -4,6 +4,7 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 const axios = require("axios");
 const rateLimit = require("express-rate-limit");
+const { generateChallenge } = require("./challengeGenerator");
 require("dotenv").config();
 
 const app = express();
@@ -35,6 +36,8 @@ function createRoom({ id, name, creatorSocketId }) {
       started: false,
       startedAt: null,
       scores: {}, // { socketId: number }
+      currentChallenge: null, // Store the current coding challenge
+      completedTests: {}, // Track which tests each player has completed { socketId: { testId: boolean } }
     },
   };
   rooms.set(id, room);
@@ -164,7 +167,7 @@ io.on("connection", (socket) => {
   });
 
   // ===== Start / Stop Match =====
-  socket.on("start-match", ({ roomId }) => {
+  socket.on("start-match", async ({ roomId }) => {
     const room = getRoom(roomId);
     if (!room) return;
     
@@ -183,16 +186,55 @@ io.on("connection", (socket) => {
     room.match.started = true;
     room.match.startedAt = Date.now();
 
-    // reset/ensure scores = 0 for current players
+    // reset/ensure scores = 0 for current players and clear completed tests
     room.match.scores = {};
-    room.players.forEach((p) => (room.match.scores[p.socketId] = 0));
-
-    io.to(roomId).emit("match-started", {
-      startedAt: room.match.startedAt,
-      scores: room.match.scores,
+    room.match.completedTests = {};
+    room.players.forEach((p) => {
+      room.match.scores[p.socketId] = 0;
+      room.match.completedTests[p.socketId] = {};
     });
 
-    console.log(`Match started in room ${roomId}`);
+    try {
+      // Generate a coding challenge using LangChain
+      const challenge = await generateChallenge('javascript', 'medium');
+      room.match.currentChallenge = challenge;
+      
+      // Emit match started event with the challenge
+      io.to(roomId).emit("match-started", {
+        startedAt: room.match.startedAt,
+        scores: room.match.scores,
+        challenge: challenge
+      });
+      
+      // Also emit a separate event for the challenge
+      io.to(roomId).emit("new-challenge", challenge);
+      
+      console.log(`Match started in room ${roomId} with challenge: ${challenge.title}`);
+    } catch (error) {
+      console.error(`Error generating challenge for room ${roomId}:`, error);
+      
+      // Fallback challenge in case of error
+      const fallbackChallenge = {
+        title: 'Reverse a String',
+        description: 'Write a function that reverses a string. The input string is given as an array of characters.',
+        constraints: 'Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.',
+        exampleInput: '"hello"',
+        exampleOutput: '"olleh"',
+        difficulty: 'Easy'
+      };
+      
+      room.match.currentChallenge = fallbackChallenge;
+      
+      io.to(roomId).emit("match-started", {
+        startedAt: room.match.startedAt,
+        scores: room.match.scores,
+        challenge: fallbackChallenge
+      });
+      
+      io.to(roomId).emit("new-challenge", fallbackChallenge);
+      
+      console.log(`Match started in room ${roomId} with fallback challenge due to error`);
+    }
   });
 
   socket.on("stop-match", ({ roomId }) => {
@@ -205,8 +247,34 @@ io.on("connection", (socket) => {
     const values = Object.values(scores);
     const maxScore = values.length ? Math.max(...values) : 0;
     const winners = Object.keys(scores).filter((id) => scores[id] === maxScore);
+    
+    // Get player usernames for winners
+    const winnerDetails = winners.map(winnerId => {
+      const player = room.players.find(p => p.socketId === winnerId);
+      return {
+        socketId: winnerId,
+        username: player ? player.username : 'Unknown Player',
+        score: scores[winnerId]
+      };
+    });
+    
+    // Get challenge details for the match summary
+    const challenge = room.match.currentChallenge;
+    const challengeDetails = challenge ? {
+      title: challenge.title,
+      hiddenTestCount: challenge.hiddenTestCases?.length || 0,
+      visibleTestCount: challenge.visibleTestCases?.length || 0
+    } : null;
 
-    io.to(roomId).emit("match-stopped", { scores, winners });
+    io.to(roomId).emit("match-stopped", { 
+      scores, 
+      winners, 
+      winnerDetails,
+      challengeDetails,
+      matchSummary: `Match ended! ${winnerDetails.length === 1 ? 
+        `${winnerDetails[0].username} won with ${winnerDetails[0].score} points!` : 
+        `${winnerDetails.map(w => w.username).join(' and ')} tied with ${maxScore} points!`}`
+    });
     console.log(`Match stopped in room ${roomId}`);
   });
 
@@ -279,43 +347,124 @@ app.post("/api/run", runLimiter, async (req, res) => {
       return res.status(400).json({ error: "Missing 'language' or 'code'." });
     }
 
-    const payload = {
-      language,
-      version,
-      files: [{ content: code }],
-      stdin,
-      args: [],
-      compile_timeout: 5000,
-      run_timeout: 5000,
-      compile_memory_limit: -1,
-      run_memory_limit: -1,
-    };
+    // Get the room and current challenge
+    const room = getRoom(roomId);
+    const challenge = room?.match?.currentChallenge;
+    
+    if (!challenge) {
+      return res.status(400).json({ error: "No active challenge found in this room." });
+    }
 
-    const { data } = await axios.post(`${PISTON_URL}/execute`, payload, {
-      timeout: 10000,
-      headers: { "Content-Type": "application/json" },
-    });
+    // Determine which test cases to use based on whether this is a submission or a run
+    const testCases = isSubmission 
+      ? [...(challenge.visibleTestCases || []), ...(challenge.hiddenTestCases || [])] 
+      : (challenge.visibleTestCases || []);
+    
+    if (testCases.length === 0) {
+      return res.status(400).json({ error: "No test cases available for this challenge." });
+    }
+
+    // Run the code against each test case
+    const testResults = [];
+    let totalPassed = 0;
+    
+    for (const testCase of testCases) {
+      // Prepare test input
+      const testInput = testCase.input.replace(/^"|"$/g, ''); // Remove quotes if present
+      
+      const payload = {
+        language,
+        version,
+        files: [{ content: code }],
+        stdin: testInput,
+        args: [],
+        compile_timeout: 5000,
+        run_timeout: 5000,
+        compile_memory_limit: -1,
+        run_memory_limit: -1,
+      };
+
+      try {
+        const { data } = await axios.post(`${PISTON_URL}/execute`, payload, {
+          timeout: 10000,
+          headers: { "Content-Type": "application/json" },
+        });
+
+        const expectedOutput = testCase.expected.replace(/^"|"$/g, '').trim();
+        const actualOutput = (data?.run?.stdout || "").trim();
+        const passed = data?.run?.code === 0 && actualOutput === expectedOutput;
+        
+        if (passed) totalPassed++;
+        
+        testResults.push({
+          input: testCase.input,
+          expected: testCase.expected,
+          actual: actualOutput,
+          passed,
+          error: data?.run?.stderr || "",
+          exitCode: data?.run?.code ?? null
+        });
+      } catch (error) {
+        // If a single test case fails to execute, add it as a failed test
+        testResults.push({
+          input: testCase.input,
+          expected: testCase.expected,
+          actual: "",
+          passed: false,
+          error: error.message || "Execution failed",
+          exitCode: 1
+        });
+      }
+    }
 
     const result = {
-      ran: !!data?.run,
-      stdout: data?.run?.stdout || "",
-      stderr: data?.run?.stderr || "",
-      exitCode: data?.run?.code ?? null,
-      signal: data?.run?.signal ?? null,
+      ran: testResults.length > 0,
+      testResults,
+      totalTests: testResults.length,
+      passedTests: totalPassed,
       language,
-      version: data?.language?.version || version,
-      compile_stderr: data?.compile?.stderr || "",
-      compile_stdout: data?.compile?.stdout || "",
+      version,
       isSubmission
     };
-
-    // Award points only if: valid room + match active + successful run
-    // Note: Points for submissions are handled by the update-score socket event
-    if (roomId && socketId && !isSubmission) {
-      const room = getRoom(roomId);
-      if (room && room.match?.started && result.exitCode === 0) {
-        room.match.scores[socketId] = (room.match.scores[socketId] || 0) + 1;
-        io.to(roomId).emit("score-update", room.match.scores);
+    
+    // Award points based on test results
+    if (roomId && socketId && room && room.match?.started) {
+      if (isSubmission) {
+        // For submissions, award points based on number of passed tests
+        // Each hidden test case is worth 10 points
+        const hiddenTestCount = challenge.hiddenTestCases?.length || 0;
+        const visibleTestCount = challenge.visibleTestCases?.length || 0;
+        
+        if (hiddenTestCount > 0) {
+          // Initialize completedTests for this player if not exists
+          room.match.completedTests[socketId] = room.match.completedTests[socketId] || {};
+          
+          // Calculate points only for newly passed hidden tests
+          let newPoints = 0;
+          testResults.slice(visibleTestCount).forEach((result, index) => {
+            const testId = `hidden_${index}`;
+            if (result.passed && !room.match.completedTests[socketId][testId]) {
+              newPoints += 10;
+              room.match.completedTests[socketId][testId] = true;
+            }
+          });
+          
+          if (newPoints > 0) {
+            room.match.scores[socketId] = (room.match.scores[socketId] || 0) + newPoints;
+            io.to(roomId).emit("score-update", room.match.scores);
+            result.pointsAwarded = newPoints;
+          }
+        }
+      } else {
+        // For regular runs, award 1 point only if they haven't received points for visible tests yet
+        const visibleTestKey = 'visible_tests_completed';
+        if (totalPassed > 0 && !room.match.completedTests[socketId]?.[visibleTestKey]) {
+          room.match.completedTests[socketId] = room.match.completedTests[socketId] || {};
+          room.match.completedTests[socketId][visibleTestKey] = true;
+          room.match.scores[socketId] = (room.match.scores[socketId] || 0) + 1;
+          io.to(roomId).emit("score-update", room.match.scores);
+          result.pointsAwarded = 1;
+        }
       }
     }
 

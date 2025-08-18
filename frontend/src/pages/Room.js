@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import socket from "../socket";
 import CodeEditor from "../components/CodeEditor";
+import TestResultsPanel from "../components/TestResultsPanel";
+import MatchResultsPanel from "../components/MatchResultsPanel";
 
 function Room() {
   const { roomId } = useParams();
@@ -21,6 +23,16 @@ function Room() {
   const [language, setLanguage] = useState("javascript");
   const [availableLanguages, setAvailableLanguages] = useState([]);
   const [isLoadingLanguages, setIsLoadingLanguages] = useState(true);
+  
+  // Challenge state
+  const [currentChallenge, setCurrentChallenge] = useState(null);
+  
+  // Test results state
+  const [testResults, setTestResults] = useState(null);
+  const [isSubmissionResults, setIsSubmissionResults] = useState(false);
+  
+  // Match results state
+  const [matchResults, setMatchResults] = useState(null);
 
 
   // Track if current user is the room creator
@@ -78,13 +90,31 @@ function Room() {
     socket.on("all-codes", (codes) => setPlayerEditors(codes));
     socket.on("score-update", (updatedScores) => setScores(updatedScores));
 
-    socket.on("match-started", ({ scores: initialScores }) => {
+    socket.on("match-started", ({ scores: initialScores, challenge }) => {
       setMatchStarted(true);
       if (initialScores) setScores(initialScores);
+      if (challenge) setCurrentChallenge(challenge);
     });
-    socket.on("match-stopped", ({ scores }) => {
+    
+    // Listen for new challenges
+    socket.on("new-challenge", (challenge) => {
+      setCurrentChallenge(challenge);
+    });
+    socket.on("match-stopped", ({ scores, winners, winnerDetails, challengeDetails, matchSummary }) => {
       setMatchStarted(false);
       if (scores) setScores(scores);
+      
+      // Display match results to all players
+      if (matchSummary) {
+        alert(matchSummary);
+      }
+      
+      // Store winner information for display
+      setMatchResults({
+        winners: winnerDetails || [],
+        challenge: challengeDetails,
+        scores
+      });
     });
     
     // Listen for match errors
@@ -151,6 +181,11 @@ function Room() {
       socket.off("score-update");
       socket.off("match-started");
       socket.off("match-stopped");
+      socket.off("new-challenge");
+      socket.off("match-error");
+      
+      // Reset match state
+      setMatchResults(null);
     };
   }, [roomId, username, navigate]);
 
@@ -193,6 +228,7 @@ function Room() {
   const runOwnCode = async () => {
     const code = playerEditors[socket.id] || "";
     setIsEvaluating(true);
+    setTestResults(null); // Clear previous test results
     try {
       const resp = await fetch("http://localhost:5000/api/run", {
         method: "POST",
@@ -209,16 +245,25 @@ function Room() {
       if (!resp.ok) {
         alert(data?.error || "Run failed");
       } else {
-        // Scoring happens server-side if match is active and exitCode===0
-        // You can show output here if you want:
+        // Display test results
         console.log("Run result:", data);
-        if (data.exitCode === 0) {
-          // optional local toast
-          console.log("Success ✓ (point should be awarded)");
-          alert("Run successful! +1 point");
+        setTestResults(data.testResults || []);
+        setIsSubmissionResults(false);
+        
+        if (data.passedTests === 0) {
+          // No tests passed
+          console.log("No tests passed.");
+        } else if (data.passedTests === data.totalTests) {
+          // All tests passed
+          console.log(`All tests passed! (${data.passedTests}/${data.totalTests})`);
         } else {
-          console.log("Program error or failed test.");
-          alert("Run failed. Your code has errors.");
+          // Some tests passed
+          console.log(`${data.passedTests}/${data.totalTests} tests passed.`);
+        }
+        
+        // Points are awarded server-side
+        if (data.pointsAwarded) {
+          console.log(`+${data.pointsAwarded} point(s) awarded!`);
         }
       }
     } catch (e) {
@@ -231,6 +276,7 @@ function Room() {
   const submitCode = async () => {
     const code = playerEditors[socket.id] || "";
     setIsEvaluating(true);
+    setTestResults(null); // Clear previous test results
     try {
       const resp = await fetch("http://localhost:5000/api/run", {
         method: "POST",
@@ -248,12 +294,25 @@ function Room() {
       if (!resp.ok) {
         alert(data?.error || "Submission failed");
       } else {
-        if (data.exitCode === 0) {
-          // Add 2 points for a successful submission
-          socket.emit("update-score", { roomId, points: 2 });
-          alert("Submission successful! +2 points");
+        // Display test results
+        console.log("Submission result:", data);
+        setTestResults(data.testResults || []);
+        setIsSubmissionResults(true);
+        
+        if (data.passedTests === 0) {
+          // No tests passed
+          alert("Your submission didn't pass any tests. No points awarded.");
+        } else if (data.passedTests === data.totalTests) {
+          // All tests passed
+          alert(`Great job! Your solution passed all ${data.totalTests} test cases.`);
         } else {
-          alert("Submission failed. Your code has errors.");
+          // Some tests passed
+          alert(`Your solution passed ${data.passedTests} out of ${data.totalTests} test cases.`);
+        }
+        
+        // Points are awarded server-side
+        if (data.pointsAwarded) {
+          alert(`+${data.pointsAwarded} points awarded for passing hidden test cases!`);
         }
       }
     } catch (e) {
@@ -403,6 +462,57 @@ function Room() {
         )}
       </div>
 
+      {/* Challenge Display */}
+      {currentChallenge && (
+        <div style={{ 
+          marginBottom: 16, 
+          padding: "15px", 
+          backgroundColor: "#f8f9fa", 
+          borderRadius: "8px", 
+          border: "1px solid #dee2e6" 
+        }}>
+          <h3 style={{ marginTop: 0 }}>{currentChallenge.title}</h3>
+          <div style={{ whiteSpace: "pre-wrap" }}>
+            <p><strong>Description:</strong> {currentChallenge.description}</p>
+            {currentChallenge.constraints && (
+              <p><strong>Constraints:</strong> {currentChallenge.constraints}</p>
+            )}
+            <div style={{ display: "flex", gap: "20px" }}>
+              <div style={{ flex: 1 }}>
+                <p><strong>Example Input:</strong></p>
+                <pre style={{ 
+                  backgroundColor: "#e9ecef", 
+                  padding: "10px", 
+                  borderRadius: "4px", 
+                  overflowX: "auto" 
+                }}>{currentChallenge.exampleInput}</pre>
+              </div>
+              <div style={{ flex: 1 }}>
+                <p><strong>Example Output:</strong></p>
+                <pre style={{ 
+                  backgroundColor: "#e9ecef", 
+                  padding: "10px", 
+                  borderRadius: "4px", 
+                  overflowX: "auto" 
+                }}>{currentChallenge.exampleOutput}</pre>
+              </div>
+            </div>
+            <p><strong>Difficulty:</strong> {currentChallenge.difficulty}</p>
+          </div>
+        </div>
+      )}
+      
+      {/* Match Results Panel - shown when match ends */}
+      {!matchStarted && matchResults && <MatchResultsPanel matchResults={matchResults} />}
+      
+      {/* Test Results Display */}
+      {testResults && testResults.length > 0 && (
+        <TestResultsPanel 
+          testResults={testResults} 
+          isSubmission={isSubmissionResults} 
+        />
+      )}
+
       {/* Scoreboard */}
       <div style={{ marginBottom: 16 }}>
         <h3>Scores</h3>
@@ -415,7 +525,7 @@ function Room() {
           ))}
         </ul>
         <small>
-          Runs award points only while a match is active and if the program exits with code 0.
+          Run: +1 point for passing visible test cases. Submit: +10 points per hidden test case passed.
         </small>
       </div>
 
