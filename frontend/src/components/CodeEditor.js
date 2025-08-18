@@ -1,11 +1,11 @@
 import React from "react";
 import Editor from "@monaco-editor/react";
 
-function CodeEditor({ code, onChange, readOnly = false }) {
+function CodeEditor({ code, onChange, readOnly = false, language = "javascript" }) {
   return (
     <Editor
       height="70vh"
-      defaultLanguage="javascript"
+      language={language}
       value={code}
       onChange={readOnly ? undefined : onChange}
       theme="vs-dark"

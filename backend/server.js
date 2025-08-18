@@ -22,13 +22,14 @@ const io = new Server(server, {
 // ===== In-memory Rooms =====
 const rooms = new Map();
 
-function createRoom({ id, name }) {
+function createRoom({ id, name, creatorSocketId }) {
   if (!id) throw new Error("room id Required");
   const room = {
     id,
     name: name || `Room-${id}`,
     players: [],
     createdAt: Date.now(),
+    creatorSocketId, // Track the creator of the room
     codes: {}, // { socketId: code }
     match: {
       started: false,
@@ -82,7 +83,18 @@ io.on("connection", (socket) => {
       return callback?.({ ok: false, error: "roomId or username is required" });
     }
 
-    const room = getRoom(roomId) || createRoom({ id: roomId, name: `Room-${roomId}` });
+    // Check if room exists
+    let room = getRoom(roomId);
+    
+    // If room exists, check if match has started
+    if (room && room.match.started) {
+      return callback?.({ ok: false, error: "Match has already started. Please create or join another room." });
+    }
+    
+    // Create room if it doesn't exist
+    if (!room) {
+      room = createRoom({ id: roomId, name: `Room-${roomId}`, creatorSocketId: socket.id });
+    }
 
     // Enforce max 4 players
     if (room.players.length >= 4) {
@@ -137,10 +149,36 @@ io.on("connection", (socket) => {
     io.to(roomId).emit("all-codes", room.codes);
   });
 
+  // ===== Update score (for submissions) =====
+  socket.on("update-score", ({ roomId, points }) => {
+    const room = getRoom(roomId);
+    if (!room || !room.match?.started) return;
+
+    // Add points to the player's score
+    room.match.scores[socket.id] = (room.match.scores[socket.id] || 0) + points;
+    
+    // Broadcast updated scores to all players in the room
+    io.to(roomId).emit("score-update", room.match.scores);
+    
+    console.log(`Score updated for ${socket.id} in room ${roomId}: +${points} points`);
+  });
+
   // ===== Start / Stop Match =====
   socket.on("start-match", ({ roomId }) => {
     const room = getRoom(roomId);
     if (!room) return;
+    
+    // Check if the socket is the room creator
+    if (room.creatorSocketId !== socket.id) {
+      socket.emit("match-error", { error: "Only the room creator can start the match" });
+      return;
+    }
+    
+    // Check if there are at least 2 players in the room
+    if (room.players.length < 2) {
+      socket.emit("match-error", { error: "At least 2 players are required to start a match" });
+      return;
+    }
 
     room.match.started = true;
     room.match.startedAt = Date.now();
@@ -200,10 +238,10 @@ app.get("/api/rooms", (req, res) => {
 });
 
 app.post("/api/rooms", (req, res) => {
-  const { id, name } = req.body || {};
+  const { id, name, creatorSocketId } = req.body || {};
   if (!id) return res.status(400).json({ error: "id required" });
   if (rooms.has(id)) return res.status(409).json({ error: "room already exists" });
-  const room = createRoom({ id, name });
+  const room = createRoom({ id, name, creatorSocketId });
   res.status(201).json({ room });
 });
 
@@ -235,7 +273,7 @@ app.get("/api/runtimes", async (req, res) => {
  */
 app.post("/api/run", runLimiter, async (req, res) => {
   try {
-    const { language, version = "*", code, stdin = "", roomId, socketId } = req.body || {};
+    const { language, version = "*", code, stdin = "", roomId, socketId, isSubmission = false } = req.body || {};
 
     if (!language || !code) {
       return res.status(400).json({ error: "Missing 'language' or 'code'." });
@@ -268,10 +306,12 @@ app.post("/api/run", runLimiter, async (req, res) => {
       version: data?.language?.version || version,
       compile_stderr: data?.compile?.stderr || "",
       compile_stdout: data?.compile?.stdout || "",
+      isSubmission
     };
 
     // Award points only if: valid room + match active + successful run
-    if (roomId && socketId) {
+    // Note: Points for submissions are handled by the update-score socket event
+    if (roomId && socketId && !isSubmission) {
       const room = getRoom(roomId);
       if (room && room.match?.started && result.exitCode === 0) {
         room.match.scores[socketId] = (room.match.scores[socketId] || 0) + 1;
