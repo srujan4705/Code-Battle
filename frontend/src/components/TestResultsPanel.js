@@ -17,7 +17,7 @@ function TestResultsPanel({ testResults, isSubmission }) {
       border: "1px solid #dee2e6" 
     }}>
       <h3 style={{ marginTop: 0 }}>
-        {isSubmission ? "Submission Results" : "Test Results"}
+        {isSubmission ? "Submission Results " : "Test Results"}
         <span style={{ 
           float: "right", 
           fontSize: "0.9em", 
