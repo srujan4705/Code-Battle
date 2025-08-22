@@ -111,7 +111,7 @@ function TestResultsPanel({ testResults, isSubmission }) {
           borderRadius: 4, 
           fontStyle: "italic" 
         }}>
-          <strong>Note:</strong> Points  are awarded only for hidden test cases when submitting.
+          <strong>Note:</strong> Points   are awarded only for hidden test cases when submitting.
         </div>
       )}
     </div>
