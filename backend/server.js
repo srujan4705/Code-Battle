@@ -37,7 +37,6 @@ function createRoom({ id, name, creatorSocketId }) {
       startedAt: null,
       scores: {}, // { socketId: number }
       currentChallenge: null, // Store the current coding challenge
-      completedTests: {}, // Track which tests each player has completed { socketId: { testId: boolean } }
     },
   };
   rooms.set(id, room);
@@ -186,13 +185,12 @@ io.on("connection", (socket) => {
     room.match.started = true;
     room.match.startedAt = Date.now();
 
-    // reset/ensure scores = 0 for current players and clear completed tests
+    // reset/ensure scores = 0 for current players
     room.match.scores = {};
-    room.match.completedTests = {};
-    room.players.forEach((p) => {
-      room.match.scores[p.socketId] = 0;
-      room.match.completedTests[p.socketId] = {};
-    });
+    // Reset tracking of passed tests
+    room.match.passedVisibleTests = {};
+    room.match.passedHiddenTests = {};
+    room.players.forEach((p) => (room.match.scores[p.socketId] = 0));
 
     try {
       // Generate a coding challenge using LangChain
@@ -436,18 +434,30 @@ app.post("/api/run", runLimiter, async (req, res) => {
         const visibleTestCount = challenge.visibleTestCases?.length || 0;
         
         if (hiddenTestCount > 0) {
-          // Initialize completedTests for this player if not exists
-          room.match.completedTests[socketId] = room.match.completedTests[socketId] || {};
+          // Calculate how many hidden tests were passed (they come after the visible tests)
+          const hiddenTestsPassed = totalPassed - Math.min(totalPassed, visibleTestCount);
+          const pointsPerHiddenTest = 10;
+          const points = hiddenTestsPassed * pointsPerHiddenTest;
           
-          // Calculate points only for newly passed hidden tests
+          // Track which hidden tests have been passed in the room object
+          if (!room.match.passedHiddenTests) {
+            room.match.passedHiddenTests = {};
+          }
+          if (!room.match.passedHiddenTests[socketId]) {
+            room.match.passedHiddenTests[socketId] = new Set();
+          }
+          
+          // Calculate points only for newly passed tests
           let newPoints = 0;
-          testResults.slice(visibleTestCount).forEach((result, index) => {
-            const testId = `hidden_${index}`;
-            if (result.passed && !room.match.completedTests[socketId][testId]) {
-              newPoints += 10;
-              room.match.completedTests[socketId][testId] = true;
+          const passedHiddenTestsSet = room.match.passedHiddenTests[socketId];
+          
+          // Check which hidden tests are newly passed
+          for (let i = visibleTestCount; i < testResults.length; i++) {
+            if (testResults[i].passed && !passedHiddenTestsSet.has(i)) {
+              passedHiddenTestsSet.add(i);
+              newPoints += pointsPerHiddenTest;
             }
-          });
+          }
           
           if (newPoints > 0) {
             room.match.scores[socketId] = (room.match.scores[socketId] || 0) + newPoints;
@@ -456,14 +466,31 @@ app.post("/api/run", runLimiter, async (req, res) => {
           }
         }
       } else {
-        // For regular runs, award 1 point only if they haven't received points for visible tests yet
-        const visibleTestKey = 'visible_tests_completed';
-        if (totalPassed > 0 && !room.match.completedTests[socketId]?.[visibleTestKey]) {
-          room.match.completedTests[socketId] = room.match.completedTests[socketId] || {};
-          room.match.completedTests[socketId][visibleTestKey] = true;
-          room.match.scores[socketId] = (room.match.scores[socketId] || 0) + 1;
+        // For regular runs, award 1 point if at least one test passes
+        // Track which visible tests have been passed
+        if (!room.match.passedVisibleTests) {
+          room.match.passedVisibleTests = {};
+        }
+        if (!room.match.passedVisibleTests[socketId]) {
+          room.match.passedVisibleTests[socketId] = new Set();
+        }
+        
+        // Calculate points only for newly passed tests
+        let newPoints = 0;
+        const passedVisibleTestsSet = room.match.passedVisibleTests[socketId];
+        
+        // Check which visible tests are newly passed
+        for (let i = 0; i < testResults.length; i++) {
+          if (testResults[i].passed && !passedVisibleTestsSet.has(i)) {
+            passedVisibleTestsSet.add(i);
+            newPoints += 1;
+          }
+        }
+        
+        if (newPoints > 0) {
+          room.match.scores[socketId] = (room.match.scores[socketId] || 0) + newPoints;
           io.to(roomId).emit("score-update", room.match.scores);
-          result.pointsAwarded = 1;
+          result.pointsAwarded = newPoints;
         }
       }
     }
