@@ -10,13 +10,14 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@huggingface/inference": "^4.7.1",
     "@langchain/openai": "^0.6.7",
     "axios": "^1.11.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
     "express": "^5.1.0",
     "express-rate-limit": "^8.0.1",
-    "langchain": "^0.3.30",
+    "langchain": "^0.3.31",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {

@@ -211,15 +211,8 @@ io.on("connection", (socket) => {
     } catch (error) {
       console.error(`Error generating challenge for room ${roomId}:`, error);
       
-      // Fallback challenge in case of error
-      const fallbackChallenge = {
-        title: 'Reverse a String',
-        description: 'Write a function that reverses a string. The input string is given as an array of characters.',
-        constraints: 'Do not allocate extra space for another array. You must do this by modifying the input array in-place with O(1) extra memory.',
-        exampleInput: '"hello"',
-        exampleOutput: '"olleh"',
-        difficulty: 'Easy'
-      };
+      // Use the fallback challenge from challengeGenerator.js
+      // The generateChallenge function will return a random fallback challenge when there's an error
       
       room.match.currentChallenge = fallbackChallenge;
       
