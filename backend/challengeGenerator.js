@@ -80,7 +80,7 @@ async function generateChallenge(language = 'javascript', difficulty = 'medium')
     console.error(`Error generating challenge: ${errorType}`, error);
     console.error(`Error details: ${errorDetails}`);
     
-    // Array of fallback challenges to choose from
+    // Array of  fallback challenges to choose from
     const fallbackChallenges = [
       {
         title: 'Reverse a String ',
