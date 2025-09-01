@@ -5,7 +5,21 @@ const cors = require("cors");
 const axios = require("axios");
 const rateLimit = require("express-rate-limit");
 const { generateChallenge } = require("./challengeGenerator");
+const mongoose = require("mongoose");
+
+// Load environment variables first
 require("dotenv").config();
+
+// Connect to MongoDB with improved error handling
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("✅ MongoDB connected");
+  })
+  .catch(err => {
+    console.error("❌ MongoDB connection error:", err);
+    // Don't exit the process, allow the server to start even if DB connection fails
+    // The challenge generator will use fallback challenges if DB is unavailable
+  });
 
 const app = express();
 app.use(cors({ origin: "http://localhost:3000" }));
@@ -23,7 +37,7 @@ const io = new Server(server, {
 // ===== In-memory Rooms =====
 const rooms = new Map();
 
-function createRoom({ id, name, creatorSocketId }) {
+function createRoom({ id, name, creatorSocketId, difficulty = 'medium' }) {
   if (!id) throw new Error("room id Required");
   const room = {
     id,
@@ -31,6 +45,7 @@ function createRoom({ id, name, creatorSocketId }) {
     players: [],
     createdAt: Date.now(),
     creatorSocketId, // Track the creator of the room
+    difficulty, // Store the difficulty level for challenges
     codes: {}, // { socketId: code }
     match: {
       started: false,
@@ -95,7 +110,7 @@ io.on("connection", (socket) => {
     
     // Create room if it doesn't exist
     if (!room) {
-      room = createRoom({ id: roomId, name: `Room-${roomId}`, creatorSocketId: socket.id });
+      room = createRoom({ id: roomId, name: `Room-${roomId}`, creatorSocketId: socket.id, difficulty: 'medium' });
     }
 
     // Enforce max 4 players
@@ -193,8 +208,8 @@ io.on("connection", (socket) => {
     room.players.forEach((p) => (room.match.scores[p.socketId] = 0));
 
     try {
-      // Generate a coding challenge using LangChain
-      const challenge = await generateChallenge('javascript', 'medium');
+      // Generate a coding challenge using only the room's difficulty setting
+      const challenge = await generateChallenge(room.difficulty);
       room.match.currentChallenge = challenge;
       
       // Emit match started event with the challenge
@@ -297,10 +312,10 @@ app.get("/api/rooms", (req, res) => {
 });
 
 app.post("/api/rooms", (req, res) => {
-  const { id, name, creatorSocketId } = req.body || {};
+  const { id, name, creatorSocketId, difficulty } = req.body || {};
   if (!id) return res.status(400).json({ error: "id required" });
   if (rooms.has(id)) return res.status(409).json({ error: "room already exists" });
-  const room = createRoom({ id, name, creatorSocketId });
+  const room = createRoom({ id, name, creatorSocketId, difficulty });
   res.status(201).json({ room });
 });
 

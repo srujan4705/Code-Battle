@@ -1,0 +1,3915 @@
+[
+  {
+    "id": "M001",
+    "title": "Rotate Array",
+    "difficulty": "Medium",
+    "description": "Given an array of integers, rotate the array to the right by k steps, where k is non-negative.",
+    "input_format": "First line contains two integers n and k. Second line contains n space-separated integers.",
+    "output_format": "A single line with n space-separated integers representing the rotated array.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= k <= 10^9",
+      "-10^9 <= nums[i] <= 10^9"
+    ],
+    "example_input": "7 3\n1 2 3 4 5 6 7",
+    "example_output": "5 6 7 1 2 3 4",
+    "sample_testcases": [
+      {
+        "input": "7 3\n1 2 3 4 5 6 7",
+        "output": "5 6 7 1 2 3 4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "4 2\n-1 -100 3 99",
+        "output": "3 99 -1 -100"
+      },
+      {
+        "input": "2 8\n10 20",
+        "output": "10 20"
+      }
+    ]
+  },
+  {
+    "id": "M002",
+    "title": "3Sum",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0. The solution set must not contain duplicate triplets.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "Each line should contain a unique triplet of numbers that sum to zero, sorted in non-descending order. If no such triplet exists, output nothing.",
+    "constraints": [
+      "3 <= n <= 3000",
+      "-10^5 <= nums[i] <= 10^5"
+    ],
+    "example_input": "6\n-1 0 1 2 -1 -4",
+    "example_output": "-1 -1 2\n-1 0 1",
+    "sample_testcases": [
+      {
+        "input": "6\n-1 0 1 2 -1 -4",
+        "output": "-1 -1 2\n-1 0 1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3\n0 0 0",
+        "output": "0 0 0"
+      },
+      {
+        "input": "4\n1 2 3 4",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "M003",
+    "title": "Number of Islands",
+    "difficulty": "Medium",
+    "description": "Given an m x n 2D binary grid which represents a map of '1's (land) and '0's (water), return the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.",
+    "input_format": "First line contains two integers m and n. The next m lines each contain n characters ('1' or '0').",
+    "output_format": "A single integer representing the number of islands.",
+    "constraints": [
+      "1 <= m, n <= 300"
+    ],
+    "example_input": "4 5\n11110\n11010\n11000\n00000",
+    "example_output": "1",
+    "sample_testcases": [
+      {
+        "input": "4 5\n11110\n11010\n11000\n00000",
+        "output": "1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "4 5\n11000\n11000\n00100\n00011",
+        "output": "3"
+      }
+    ]
+  },
+  {
+    "id": "M004",
+    "title": "Longest Substring Without Repeating Characters",
+    "difficulty": "Medium",
+    "description": "Given a string, find the length of the longest substring without repeating characters.",
+    "input_format": "A single line containing the string s.",
+    "output_format": "A single integer representing the length of the longest substring.",
+    "constraints": [
+      "0 <= s.length <= 5 * 10^4"
+    ],
+    "example_input": "abcabcbb",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "abcabcbb",
+        "output": "3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "bbbbb",
+        "output": "1"
+      },
+      {
+        "input": "pwwkew",
+        "output": "3"
+      }
+    ]
+  },
+  {
+    "id": "M005",
+    "title": "Coin Change",
+    "difficulty": "Medium",
+    "description": "You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money. Return the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.",
+    "input_format": "First line contains n and amount. Second line contains n space-separated integers for coins.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= coins.length <= 12",
+      "1 <= coins[i] <= 2^31 - 1",
+      "0 <= amount <= 10^4"
+    ],
+    "example_input": "3 11\n1 2 5",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "3 11\n1 2 5",
+        "output": "3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1 3\n2",
+        "output": "-1"
+      },
+      {
+        "input": "1 0\n1",
+        "output": "0"
+      }
+    ]
+  },
+  {
+    "id": "M006",
+    "title": "Validate Binary Search Tree",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary tree, determine if it is a valid Binary Search Tree (BST). A valid BST is defined as follows: The left subtree of a node contains only nodes with keys less than the node's key. The right subtree of a node contains only nodes with keys greater than the node's key. Both the left and right subtrees must also be binary search trees.",
+    "input_format": "A level-order representation of the binary tree. First line is n, the number of nodes. The second line contains n space-separated values (integers or 'null').",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "-2^31 <= Node.val <= 2^31 - 1"
+    ],
+    "example_input": "3\n2 1 3",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "3\n2 1 3",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n5 1 4 null null 3 6",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "M007",
+    "title": "Product of Array Except Self",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i]. You must write an algorithm that runs in O(n) time and without using the division operation.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line with n space-separated integers.",
+    "constraints": [
+      "2 <= n <= 10^5",
+      "-30 <= nums[i] <= 30"
+    ],
+    "example_input": "4\n1 2 3 4",
+    "example_output": "24 12 8 6",
+    "sample_testcases": [
+      {
+        "input": "4\n1 2 3 4",
+        "output": "24 12 8 6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n-1 1 0 -3 3",
+        "output": "0 0 9 0 0"
+      }
+    ]
+  },
+  {
+    "id": "M008",
+    "title": "Permutations",
+    "difficulty": "Medium",
+    "description": "Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "Each line contains a unique permutation of the numbers, with elements separated by spaces.",
+    "constraints": [
+      "1 <= n <= 6"
+    ],
+    "example_input": "3\n1 2 3",
+    "example_output": "1 2 3\n1 3 2\n2 1 3\n2 3 1\n3 1 2\n3 2 1",
+    "sample_testcases": [
+      {
+        "input": "3\n1 2 3",
+        "output": "1 2 3\n1 3 2\n2 1 3\n2 3 1\n3 1 2\n3 2 1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\n0 1",
+        "output": "0 1\n1 0"
+      }
+    ]
+  },
+  {
+    "id": "M009",
+    "title": "Top K Frequent Elements",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums and an integer k, return the k most frequent elements. You may return the answer in any order.",
+    "input_format": "First line n and k. Second line n space-separated integers.",
+    "output_format": "A single line with k space-separated integers.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= k <= number of unique elements",
+      "-10^4 <= nums[i] <= 10^4"
+    ],
+    "example_input": "6 2\n1 1 1 2 2 3",
+    "example_output": "1 2",
+    "sample_testcases": [
+      {
+        "input": "6 2\n1 1 1 2 2 3",
+        "output": "1 2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1 1\n1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "M010",
+    "title": "Jump Game",
+    "difficulty": "Medium",
+    "description": "You are given an integer array nums. You are initially positioned at the array's first index, and each element in the array represents your maximum jump length at that position. Return true if you can reach the last index, or false otherwise.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "0 <= nums[i] <= 10^5"
+    ],
+    "example_input": "5\n2 3 1 1 4",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "5\n2 3 1 1 4",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n3 2 1 0 4",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "M011",
+    "title": "Search in Rotated Sorted Array",
+    "difficulty": "Medium",
+    "description": "There is an integer array nums sorted in ascending order (with distinct values). Prior to being passed to your function, nums is possibly rotated at an unknown pivot. Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.",
+    "input_format": "First line n and target. Second line n space-separated integers.",
+    "output_format": "A single integer: the index of the target or -1.",
+    "constraints": [
+      "1 <= n <= 5000",
+      "-10^4 <= nums[i], target <= 10^4"
+    ],
+    "example_input": "7 0\n4 5 6 7 0 1 2",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "7 0\n4 5 6 7 0 1 2",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "7 3\n4 5 6 7 0 1 2",
+        "output": "-1"
+      },
+      {
+        "input": "1 0\n1",
+        "output": "-1"
+      }
+    ]
+  },
+  {
+    "id": "M012",
+    "title": "Kth Smallest Element in a BST",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary search tree, and an integer k, return the kth smallest value (1-indexed) of all the values of the nodes in the tree.",
+    "input_format": "First line is n (number of nodes) and k. Second line is a level-order representation of the BST with n space-separated values (integers or 'null').",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= k <= n <= 10^4",
+      "0 <= Node.val <= 10^6"
+    ],
+    "example_input": "3 1\n3 1 4 null 2",
+    "example_output": "1",
+    "sample_testcases": [
+      {
+        "input": "5 3\n5 3 6 2 4 null null 1",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1 1\n1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "M013",
+    "title": "Container With Most Water",
+    "difficulty": "Medium",
+    "description": "You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]). Find two lines that together with the x-axis form a container, such that the container contains the most water. Return the maximum amount of water a container can store.",
+    "input_format": "First line n. Second line n space-separated integers representing heights.",
+    "output_format": "A single integer representing the maximum area.",
+    "constraints": [
+      "2 <= n <= 10^5",
+      "0 <= height[i] <= 10^4"
+    ],
+    "example_input": "9\n1 8 6 2 5 4 8 3 7",
+    "example_output": "49",
+    "sample_testcases": [
+      {
+        "input": "9\n1 8 6 2 5 4 8 3 7",
+        "output": "49"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\n1 1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "M015",
+    "title": "Daily Temperatures",
+    "difficulty": "Medium",
+    "description": "Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of n space-separated integers.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "30 <= temperatures[i] <= 100"
+    ],
+    "example_input": "8\n73 74 75 71 69 72 76 73",
+    "example_output": "1 1 4 2 1 1 0 0",
+    "sample_testcases": [
+      {
+        "input": "8\n73 74 75 71 69 72 76 73",
+        "output": "1 1 4 2 1 1 0 0"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "4\n30 40 50 60",
+        "output": "1 1 1 0"
+      },
+      {
+        "input": "3\n30 60 90",
+        "output": "1 1 0"
+      }
+    ]
+  },
+  {
+    "id": "M016",
+    "title": "Merge Intervals",
+    "difficulty": "Medium",
+    "description": "Given an array of intervals where intervals[i] = [start_i, end_i], merge all overlapping intervals, and return an array of the non-overlapping intervals that cover all the intervals in the input.",
+    "input_format": "First line n. The next n lines each contain two space-separated integers, start and end.",
+    "output_format": "Each line contains a merged interval, start and end, separated by a space. The intervals should be sorted by their start time.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "0 <= start_i <= end_i <= 10^4"
+    ],
+    "example_input": "4\n1 3\n2 6\n8 10\n15 18",
+    "example_output": "1 6\n8 10\n15 18",
+    "sample_testcases": [
+      {
+        "input": "2\n1 4\n4 5",
+        "output": "1 5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n1 5\n2 3\n6 8\n7 9\n10 12",
+        "output": "1 5\n6 9\n10 12"
+      }
+    ]
+  },
+  {
+    "id": "M017",
+    "title": "Group Anagrams",
+    "difficulty": "Medium",
+    "description": "Given an array of strings, group the anagrams together. You can return the answer in any order.",
+    "input_format": "First line n. The next n lines each contain a single string.",
+    "output_format": "Each line contains a group of anagrams, space-separated. The groups can be in any order.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "0 <= strs[i].length <= 100",
+      "strs[i] consists of lowercase English letters."
+    ],
+    "example_input": "6\neat\ntea\ntan\nate\nnat\nbat",
+    "example_output": "bat\ntan nat\neat tea ate",
+    "sample_testcases": [
+      {
+        "input": "6\neat\ntea\ntan\nate\nnat\nbat",
+        "output": "bat\ntan nat\neat tea ate"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\na",
+        "output": "a"
+      }
+    ]
+  },
+  {
+    "id": "M018",
+    "title": "Longest Palindromic Substring",
+    "difficulty": "Medium",
+    "description": "Given a string s, return the longest palindromic substring in s.",
+    "input_format": "A single line containing the string s.",
+    "output_format": "A single string, the longest palindromic substring.",
+    "constraints": [
+      "1 <= s.length <= 1000"
+    ],
+    "example_input": "babad",
+    "example_output": "bab",
+    "sample_testcases": [
+      {
+        "input": "babad",
+        "output": "bab"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "cbbd",
+        "output": "bb"
+      },
+      {
+        "input": "a",
+        "output": "a"
+      }
+    ]
+  },
+  {
+    "id": "M019",
+    "title": "Unique Paths",
+    "difficulty": "Medium",
+    "description": "A robot is located at the top-left corner of a m x n grid. The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid. How many possible unique paths are there?",
+    "input_format": "Two space-separated integers, m and n.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= m, n <= 100"
+    ],
+    "example_input": "3 7",
+    "example_output": "28",
+    "sample_testcases": [
+      {
+        "input": "3 7",
+        "output": "28"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 2",
+        "output": "3"
+      },
+      {
+        "input": "1 1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "M020",
+    "title": "Word Break",
+    "difficulty": "Medium",
+    "description": "Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.",
+    "input_format": "First line is the string s. Second line is n, number of words in dictionary. The next n lines contain the dictionary words.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= s.length <= 300",
+      "1 <= wordDict.length <= 1000",
+      "1 <= wordDict[i].length <= 20"
+    ],
+    "example_input": "leetcode\n2\nleet\ncode",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "leetcode\n2\nleet\ncode",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "catsandog\n5\ncats\ndog\nsand\nand\ncat",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "M021",
+    "title": "Subsets",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums of unique elements, return all possible subsets (the power set). The solution set must not contain duplicate subsets. Return the solution in any order.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "Each line contains a unique subset, with elements space-separated. An empty line represents the empty set.",
+    "constraints": [
+      "1 <= n <= 10"
+    ],
+    "example_input": "3\n1 2 3",
+    "example_output": "\n1\n2\n1 2\n3\n1 3\n2 3\n1 2 3",
+    "sample_testcases": [
+      {
+        "input": "3\n1 2 3",
+        "output": "\n1\n2\n1 2\n3\n1 3\n2 3\n1 2 3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n0",
+        "output": "\n0"
+      }
+    ]
+  },
+  {
+    "id": "M022",
+    "title": "Decode Ways",
+    "difficulty": "Medium",
+    "description": "A message containing letters from A-Z is being encoded to numbers using the following mapping: 'A' -> 1, 'B' -> 2, ..., 'Z' -> 26. Given a non-empty string containing only digits, determine the total number of ways to decode it.",
+    "input_format": "A single line containing the string of digits.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= s.length <= 100",
+      "s contains only digits and may contain leading zero(s)."
+    ],
+    "example_input": "226",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "226",
+        "output": "3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "12",
+        "output": "2"
+      },
+      {
+        "input": "06",
+        "output": "0"
+      }
+    ]
+  },
+  {
+    "id": "M023",
+    "title": "Spiral Matrix",
+    "difficulty": "Medium",
+    "description": "Given an m x n matrix, return all elements of the matrix in spiral order.",
+    "input_format": "First line m and n. The next m lines contain n space-separated integers.",
+    "output_format": "A single line of space-separated integers.",
+    "constraints": [
+      "1 <= m, n <= 10"
+    ],
+    "example_input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+    "example_output": "1 2 3 6 9 8 7 4 5",
+    "sample_testcases": [
+      {
+        "input": "3 3\n1 2 3\n4 5 6\n7 8 9",
+        "output": "1 2 3 6 9 8 7 4 5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 4\n1 2 3 4\n5 6 7 8\n9 10 11 12",
+        "output": "1 2 3 4 8 12 11 10 9 5 6 7"
+      }
+    ]
+  },
+  {
+    "id": "M024",
+    "title": "Find the Duplicate Number",
+    "difficulty": "Medium",
+    "description": "Given an array of integers nums containing n + 1 integers where each integer is in the range [1, n] inclusive. There is only one repeated number in nums, return this repeated number. You must solve the problem without modifying the array nums and using only constant extra space.",
+    "input_format": "First line n+1. Second line n+1 space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "nums.length == n + 1",
+      "1 <= nums[i] <= n"
+    ],
+    "example_input": "5\n1 3 4 2 2",
+    "example_output": "2",
+    "sample_testcases": [
+      {
+        "input": "5\n1 3 4 2 2",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n3 1 3 4 2",
+        "output": "3"
+      }
+    ]
+  },
+  {
+    "id": "M025",
+    "title": "House Robber",
+    "difficulty": "Medium",
+    "description": "You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security systems connected and it will automatically contact the police if two adjacent houses were broken into on the same night. Given an integer array nums representing the amount of money of each house, return the maximum amount of money you can rob tonight without alerting the police.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 100",
+      "0 <= nums[i] <= 400"
+    ],
+    "example_input": "5\n2 7 9 3 1",
+    "example_output": "12",
+    "sample_testcases": [
+      {
+        "input": "5\n2 7 9 3 1",
+        "output": "12"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "4\n1 2 3 1",
+        "output": "4"
+      }
+    ]
+  },
+  {
+    "id": "M026",
+    "title": "Sort Colors",
+    "difficulty": "Medium",
+    "description": "Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue. We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively. You must solve this problem without using the library's sort function.",
+    "input_format": "First line n. Second line n space-separated integers (0, 1, or 2).",
+    "output_format": "A single line of n space-separated sorted integers.",
+    "constraints": [
+      "1 <= n <= 300"
+    ],
+    "example_input": "6\n2 0 2 1 1 0",
+    "example_output": "0 0 1 1 2 2",
+    "sample_testcases": [
+      {
+        "input": "6\n2 0 2 1 1 0",
+        "output": "0 0 1 1 2 2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\n2 0",
+        "output": "0 2"
+      }
+    ]
+  },
+  {
+    "id": "M027",
+    "title": "Remove Nth Node From End of List",
+    "difficulty": "Medium",
+    "description": "Given the head of a linked list, remove the nth node from the end of the list and return its head.",
+    "input_format": "First line has the number of nodes in list, m, and the integer n. Second line contains m space-separated integers representing the list.",
+    "output_format": "A single line of space-separated integers representing the modified list.",
+    "constraints": [
+      "1 <= m <= 30",
+      "1 <= n <= m"
+    ],
+    "example_input": "5 2\n1 2 3 4 5",
+    "example_output": "1 2 3 5",
+    "sample_testcases": [
+      {
+        "input": "5 2\n1 2 3 4 5",
+        "output": "1 2 3 5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1 1\n1",
+        "output": ""
+      },
+      {
+        "input": "2 1\n1 2",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "M028",
+    "title": "Course Schedule",
+    "difficulty": "Medium",
+    "description": "There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [a, b] indicates that you must take course b first if you want to take course a. Return true if you can finish all courses. Otherwise, return false.",
+    "input_format": "First line numCourses and p (number of prerequisites). The next p lines each contain two space-separated integers, a and b.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= numCourses <= 2000",
+      "0 <= p <= 5000"
+    ],
+    "example_input": "2 1\n1 0",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "2 1\n1 0",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2 2\n1 0\n0 1",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "M029",
+    "title": "Lowest Common Ancestor of a Binary Tree",
+    "difficulty": "Medium",
+    "description": "Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree. The LCA is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).",
+    "input_format": "First line n (number of nodes), p, and q. Second line is a level-order representation of the tree with n values. p and q are values of nodes present in the tree.",
+    "output_format": "The integer value of the LCA node.",
+    "constraints": [
+      "2 <= n <= 10^5",
+      "Node values are unique."
+    ],
+    "example_input": "9 5 1\n3 5 1 6 2 0 8 null null 7 4",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "9 5 4\n3 5 1 6 2 0 8 null null 7 4",
+        "output": "5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 2 1\n1 2 null",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "M030",
+    "title": "Find All Duplicates in an Array",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums of length n where all the integers of nums are in the range [1, n] and each integer appears once or twice, return an array of all the integers that appears twice. You must write an algorithm that runs in O(n) time and uses only constant extra space.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of space-separated integers that appear twice, sorted in ascending order.",
+    "constraints": [
+      "1 <= n <= 10^5"
+    ],
+    "example_input": "8\n4 3 2 7 8 2 3 1",
+    "example_output": "2 3",
+    "sample_testcases": [
+      {
+        "input": "8\n4 3 2 7 8 2 3 1",
+        "output": "2 3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\n1 1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "M031",
+    "title": "Kth Largest Element in an Array",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums and an integer k, return the kth largest element in the array.",
+    "input_format": "First line n and k. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= k <= n <= 10^5",
+      "-10^4 <= nums[i] <= 10^4"
+    ],
+    "example_input": "6 2\n3 2 1 5 6 4",
+    "example_output": "5",
+    "sample_testcases": [
+      {
+        "input": "6 2\n3 2 1 5 6 4",
+        "output": "5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "9 4\n3 2 3 1 2 4 5 5 6",
+        "output": "4"
+      }
+    ]
+  },
+  {
+    "id": "M032",
+    "title": "Odd Even Linked List",
+    "difficulty": "Medium",
+    "description": "Given the head of a singly linked list, group all the nodes with odd indices together followed by the nodes with even indices, and return the reordered list. The first node is considered odd, the second node even, and so on.",
+    "input_format": "First line n. Second line n space-separated integers representing the list.",
+    "output_format": "A single line of space-separated integers representing the modified list.",
+    "constraints": [
+      "0 <= n <= 10^4"
+    ],
+    "example_input": "5\n1 2 3 4 5",
+    "example_output": "1 3 5 2 4",
+    "sample_testcases": [
+      {
+        "input": "5\n1 2 3 4 5",
+        "output": "1 3 5 2 4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "7\n2 1 3 5 6 4 7",
+        "output": "2 3 6 7 1 5 4"
+      }
+    ]
+  },
+  {
+    "id": "M033",
+    "title": "Letter Combinations of a Phone Number",
+    "difficulty": "Medium",
+    "description": "Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order. A mapping of digits to letters is just like on the telephone buttons.",
+    "input_format": "A single string of digits.",
+    "output_format": "A single line of space-separated letter combinations.",
+    "constraints": [
+      "0 <= digits.length <= 4"
+    ],
+    "example_input": "23",
+    "example_output": "ad ae af bd be bf cd ce cf",
+    "sample_testcases": [
+      {
+        "input": "23",
+        "output": "ad ae af bd be bf cd ce cf"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "",
+        "output": ""
+      },
+      {
+        "input": "2",
+        "output": "a b c"
+      }
+    ]
+  },
+  {
+    "id": "M034",
+    "title": "Longest Increasing Subsequence",
+    "difficulty": "Medium",
+    "description": "Given an integer array nums, return the length of the longest strictly increasing subsequence.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 2500",
+      "-10^4 <= nums[i] <= 10^4"
+    ],
+    "example_input": "8\n10 9 2 5 3 7 101 18",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "8\n10 9 2 5 3 7 101 18",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "6\n0 1 0 3 2 3",
+        "output": "4"
+      },
+      {
+        "input": "7\n7 7 7 7 7 7 7",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "M035",
+    "title": "Minimum Path Sum",
+    "difficulty": "Medium",
+    "description": "Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path. You can only move either down or right at any point in time.",
+    "input_format": "First line m and n. The next m lines contain n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= m, n <= 200",
+      "0 <= grid[i][j] <= 100"
+    ],
+    "example_input": "3 3\n1 3 1\n1 5 1\n4 2 1",
+    "example_output": "7",
+    "sample_testcases": [
+      {
+        "input": "3 3\n1 3 1\n1 5 1\n4 2 1",
+        "output": "7"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2 2\n1 2\n1 1",
+        "output": "3"
+      }
+    ]
+  },
+  {
+    "id": "M036",
+    "title": "Rotting Oranges",
+    "difficulty": "Medium",
+    "description": "You are given an m x n grid where each cell can have one of three values: 0 representing an empty cell, 1 representing a fresh orange, or 2 representing a rotten orange. Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten. Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.",
+    "input_format": "First line m and n. The next m lines contain n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= m, n <= 10"
+    ],
+    "example_input": "3 3\n2 1 1\n1 1 0\n0 1 1",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "3 3\n2 1 1\n1 1 0\n0 1 1",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 3\n2 1 1\n0 1 1\n1 0 1",
+        "output": "-1"
+      },
+      {
+        "input": "1 2\n0 2",
+        "output": "0"
+      }
+    ]
+  },
+  {
+    "id": "M037",
+    "title": "Word Search",
+    "difficulty": "Medium",
+    "description": "Given an m x n grid of characters board and a string word, return true if word exists in the grid. The word can be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once.",
+    "input_format": "First line m and n. The next m lines contain n characters. The last line is the word to search.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= m, n <= 6",
+      "1 <= word.length <= 15"
+    ],
+    "example_input": "3 4\nABCE\nSFCS\nADEE\nABCCED",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "3 4\nABCE\nSFCS\nADEE\nSEE",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 4\nABCE\nSFCS\nADEE\nABCB",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "M038",
+    "title": "Binary Tree Level Order Traversal",
+    "difficulty": "Medium",
+    "description": "Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).",
+    "input_format": "First line n, number of nodes. Second line is a level-order representation of the tree with n values.",
+    "output_format": "Each line represents a level, with node values separated by spaces.",
+    "constraints": [
+      "0 <= n <= 2000"
+    ],
+    "example_input": "7\n3 9 20 null null 15 7",
+    "example_output": "3\n9 20\n15 7",
+    "sample_testcases": [
+      {
+        "input": "7\n3 9 20 null null 15 7",
+        "output": "3\n9 20\n15 7"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n1",
+        "output": "1"
+      },
+      {
+        "input": "0\n",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "M039",
+    "title": "Task Scheduler",
+    "difficulty": "Medium",
+    "description": "Given a characters array tasks, representing the tasks a CPU needs to do, where each letter represents a different task. Tasks could be done in any order. Each task is done in one unit of time. For each unit of time, the CPU could complete either one task or just be idle. However, there is a non-negative integer n that represents the cooldown period between two same tasks (the same letter in the array), that is that there must be at least n units of time between any two same tasks. Return the least number of units of time that the CPU will take to finish all the given tasks.",
+    "input_format": "First line is n, the cooldown period. Second line is a string of characters representing tasks.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= tasks.length <= 10^4",
+      "0 <= n <= 100"
+    ],
+    "example_input": "2\nAAABBC",
+    "example_output": "8",
+    "sample_testcases": [
+      {
+        "input": "2\nAAABBC",
+        "output": "8"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "0\nAAABBB",
+        "output": "6"
+      },
+      {
+        "input": "2\nAAAAA",
+        "output": "9"
+      }
+    ]
+  },
+  {
+    "id": "M040",
+    "title": "Number of Connected Components in an Undirected Graph",
+    "difficulty": "Medium",
+    "description": "You have a graph of n nodes. You are given an integer n and an array edges where edges[i] = [a, b] indicates that there is an edge between a and b in the graph. Return the number of connected components in the graph.",
+    "input_format": "First line n and e (number of edges). The next e lines each contain two space-separated integers, a and b.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 2000",
+      "0 <= e <= 5000"
+    ],
+    "example_input": "5 4\n0 1\n1 2\n3 4",
+    "example_output": "2",
+    "sample_testcases": [
+      {
+        "input": "5 4\n0 1\n1 2\n3 4",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "6 3\n0 1\n2 3\n4 5",
+        "output": "3"
+      }
+    ]
+  },
+  {
+    "id": "M041",
+    "title": "Set Matrix Zeroes",
+    "difficulty": "Medium",
+    "description": "Given an m x n integer matrix, if an element is 0, set its entire row and column to 0's. You must do it in-place.",
+    "input_format": "First line m and n. The next m lines contain n space-separated integers.",
+    "output_format": "The modified m x n matrix, with each row on a new line and elements space-separated.",
+    "constraints": [
+      "1 <= m, n <= 200"
+    ],
+    "example_input": "3 3\n1 1 1\n1 0 1\n1 1 1",
+    "example_output": "1 0 1\n0 0 0\n1 0 1",
+    "sample_testcases": [
+      {
+        "input": "3 3\n1 1 1\n1 0 1\n1 1 1",
+        "output": "1 0 1\n0 0 0\n1 0 1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 4\n0 1 2 0\n3 4 5 2\n1 3 1 5",
+        "output": "0 0 0 0\n0 4 5 0\n0 3 1 0"
+      }
+    ]
+  },
+  {
+    "id": "M042",
+    "title": "Subarray Sum Equals K",
+    "difficulty": "Medium",
+    "description": "Given an array of integers nums and an integer k, return the total number of continuous subarrays whose sum equals to k.",
+    "input_format": "First line n and k. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 2 * 10^4",
+      "-1000 <= nums[i] <= 1000",
+      "-10^7 <= k <= 10^7"
+    ],
+    "example_input": "3 2\n1 1 1",
+    "example_output": "2",
+    "sample_testcases": [
+      {
+        "input": "3 2\n1 1 1",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5 3\n1 2 3 -1 1",
+        "output": "3"
+      }
+    ]
+  },
+  {
+    "id": "M043",
+    "title": "Partition Equal Subset Sum",
+    "difficulty": "Medium",
+    "description": "Given a non-empty array nums containing only positive integers, find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= n <= 200",
+      "1 <= nums[i] <= 100"
+    ],
+    "example_input": "4\n1 5 11 5",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "4\n1 5 11 5",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3\n1 2 5",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "M044",
+    "title": "Evaluate Reverse Polish Notation",
+    "difficulty": "Medium",
+    "description": "Evaluate the value of an arithmetic expression in Reverse Polish Notation. Valid operators are +, -, *, /. Each operand may be an integer or another expression.",
+    "input_format": "First line n. Second line n space-separated strings (numbers or operators).",
+    "output_format": "A single integer, the result of the evaluation.",
+    "constraints": [
+      "1 <= n <= 10^4",
+      "Tokens are '+', '-', '*', '/', or an integer."
+    ],
+    "example_input": "5\n2 1 + 3 *",
+    "example_output": "9",
+    "sample_testcases": [
+      {
+        "input": "5\n2 1 + 3 *",
+        "output": "9"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "13\n10 6 9 3 + -11 * / * 17 + 5 +",
+        "output": "22"
+      }
+    ]
+  },
+  {
+    "id": "M045",
+    "title": "Generate Parentheses",
+    "difficulty": "Medium",
+    "description": "Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.",
+    "input_format": "A single integer n.",
+    "output_format": "Each line contains one valid combination of parentheses.",
+    "constraints": [
+      "1 <= n <= 8"
+    ],
+    "example_input": "3",
+    "example_output": "((()))\n(()())\n(())()\n()(())\n()()()",
+    "sample_testcases": [
+      {
+        "input": "3",
+        "output": "((()))\n(()())\n(())()\n()(())\n()()()"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1",
+        "output": "()"
+      }
+    ]
+  },
+  {
+    "id": "M046",
+    "title": "Construct Binary Tree from Preorder and Inorder Traversal",
+    "difficulty": "Medium",
+    "description": "Given two integer arrays preorder and inorder where preorder is the preorder traversal of a binary tree and inorder is the inorder traversal of the same tree, construct and return the binary tree.",
+    "input_format": "First line n. Second line n space-separated integers for preorder. Third line n space-separated integers for inorder.",
+    "output_format": "A single line representing the level-order traversal of the constructed tree, with nulls for empty spots.",
+    "constraints": [
+      "1 <= n <= 3000",
+      "All values in the arrays are unique."
+    ],
+    "example_input": "5\n3 9 20 15 7\n9 3 15 20 7",
+    "example_output": "3 9 20 null null 15 7",
+    "sample_testcases": [
+      {
+        "input": "5\n3 9 20 15 7\n9 3 15 20 7",
+        "output": "3 9 20 null null 15 7"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n-1\n-1",
+        "output": "-1"
+      }
+    ]
+  },
+  {
+    "id": "M047",
+    "title": "String to Integer (atoi)",
+    "difficulty": "Medium",
+    "description": "Implement the myAtoi(string s) function, which converts a string to a 32-bit signed integer. The algorithm for myAtoi(string s) is as follows: 1. Read in and ignore any leading whitespace. 2. Check if the next character is '-' or '+'. 3. Read in next the characters until the next non-digit character or the end of the input is reached. 4. Convert these digits into an integer. If no digits were read, then the integer is 0. 5. If the integer is out of the 32-bit signed integer range, then clamp the integer so that it remains in the range.",
+    "input_format": "A single line containing the string s.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "0 <= s.length <= 200",
+      "s consists of English letters (lower-case and upper-case), digits (0-9), ' ', '+', '-', and '.'."
+    ],
+    "example_input": "42",
+    "example_output": "42",
+    "sample_testcases": [
+      {
+        "input": "   -42",
+        "output": "-42"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "4193 with words",
+        "output": "4193"
+      },
+      {
+        "input": "-91283472332",
+        "output": "-2147483648"
+      }
+    ]
+  },
+  {
+    "id": "M048",
+    "title": "Find Peak Element",
+    "difficulty": "Medium",
+    "description": "A peak element is an element that is strictly greater than its neighbors. Given a 0-indexed integer array nums, find a peak element, and return its index. You may imagine that nums[-1] = nums[n] = -infinity. You must write an algorithm that runs in O(log n) time.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "The index of any peak element.",
+    "constraints": [
+      "1 <= n <= 1000"
+    ],
+    "example_input": "4\n1 2 3 1",
+    "example_output": "2",
+    "sample_testcases": [
+      {
+        "input": "4\n1 2 3 1",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "6\n1 2 1 3 5 6 4",
+        "output": "5"
+      }
+    ]
+  },
+  {
+    "id": "M049",
+    "title": "Game of Life",
+    "difficulty": "Medium",
+    "description": "According to Wikipedia's article: The Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970. The universe of the Game of Life is an infinite two-dimensional orthogonal grid of square cells, each of which is in one of two possible states, live (1) or dead (0). Every cell interacts with its eight neighbours. At each step in time, the following transitions occur: 1. Any live cell with fewer than two live neighbours dies (underpopulation). 2. Any live cell with two or three live neighbours lives on to the next generation. 3. Any live cell with more than three live neighbours dies (overpopulation). 4. Any dead cell with exactly three live neighbours becomes a live cell (reproduction). The next state is created by applying the above rules simultaneously to every cell in the current state. Given the current state of the m x n grid, return the next state. You must solve this in-place.",
+    "input_format": "First line m and n. The next m lines contain n space-separated integers (0 or 1).",
+    "output_format": "The m x n grid representing the next state.",
+    "constraints": [
+      "1 <= m, n <= 25"
+    ],
+    "example_input": "4 3\n0 1 0\n0 0 1\n1 1 1\n0 0 0",
+    "example_output": "0 0 0\n1 0 1\n0 1 1\n0 1 0",
+    "sample_testcases": [
+      {
+        "input": "4 3\n0 1 0\n0 0 1\n1 1 1\n0 0 0",
+        "output": "0 0 0\n1 0 1\n0 1 1\n0 1 0"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2 2\n1 1\n1 0",
+        "output": "1 1\n1 1"
+      }
+    ]
+  },
+  {
+    "id": "M050",
+    "title": "Find First and Last Position of Element in Sorted Array",
+    "difficulty": "Medium",
+    "description": "Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value. If target is not found in the array, return [-1, -1]. You must write an algorithm with O(log n) runtime complexity.",
+    "input_format": "First line n and target. Second line n space-separated integers.",
+    "output_format": "Two space-separated integers: the starting and ending position, or -1 -1 if not found.",
+    "constraints": [
+      "0 <= n <= 10^5",
+      "-10^9 <= nums[i], target <= 10^9"
+    ],
+    "example_input": "6 8\n5 7 7 8 8 10",
+    "example_output": "3 4",
+    "sample_testcases": [
+      {
+        "input": "6 8\n5 7 7 8 8 10",
+        "output": "3 4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "6 6\n5 7 7 8 8 10",
+        "output": "-1 -1"
+      },
+      {
+        "input": "0 0\n",
+        "output": "-1 -1"
+      }
+    ]
+  },
+  {
+    "id": "E001",
+    "title": "Two Sum",
+    "difficulty": "Easy",
+    "description": "Given an array of integers `nums` and an integer `target`, return the indices of the two numbers such that they add up to `target`. You may assume that each input would have exactly one solution, and you may not use the same element twice.",
+    "input_format": "First line contains n and target. Second line contains n space-separated integers.",
+    "output_format": "Two space-separated integers representing the indices in ascending order.",
+    "constraints": [
+      "2 <= n <= 10^4",
+      "-10^9 <= nums[i], target <= 10^9"
+    ],
+    "example_input": "4 9\n2 7 11 15",
+    "example_output": "0 1",
+    "sample_testcases": [
+      {
+        "input": "4 9\n2 7 11 15",
+        "output": "0 1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 6\n3 2 4",
+        "output": "1 2"
+      },
+      {
+        "input": "2 6\n3 3",
+        "output": "0 1"
+      }
+    ]
+  },
+  {
+    "id": "E002",
+    "title": "Reverse String",
+    "difficulty": "Easy",
+    "description": "Write a function that reverses a string. The input string is given as an array of characters.",
+    "input_format": "A single line containing the string.",
+    "output_format": "A single line containing the reversed string.",
+    "constraints": [
+      "1 <= s.length <= 10^5"
+    ],
+    "example_input": "hello",
+    "example_output": "olleh",
+    "sample_testcases": [
+      {
+        "input": "hello",
+        "output": "olleh"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "Hannah",
+        "output": "hannaH"
+      },
+      {
+        "input": "a",
+        "output": "a"
+      }
+    ]
+  },
+  {
+    "id": "E003",
+    "title": "Valid Palindrome",
+    "difficulty": "Easy",
+    "description": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Given a string s, return true if it is a palindrome, or false otherwise.",
+    "input_format": "A single line containing the string s.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= s.length <= 2 * 10^5"
+    ],
+    "example_input": "A man, a plan, a canal: Panama",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "A man, a plan, a canal: Panama",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "race a car",
+        "output": "false"
+      },
+      {
+        "input": " ",
+        "output": "true"
+      }
+    ]
+  },
+  {
+    "id": "E004",
+    "title": "Contains Duplicate",
+    "difficulty": "Easy",
+    "description": "Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^9 <= nums[i] <= 10^9"
+    ],
+    "example_input": "4\n1 2 3 1",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "4\n1 2 3 1",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "4\n1 2 3 4",
+        "output": "false"
+      },
+      {
+        "input": "1\n1",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "E005",
+    "title": "FizzBuzz",
+    "difficulty": "Easy",
+    "description": "Given an integer n, return a list of strings where: answer[i] is 'FizzBuzz' if i is divisible by 3 and 5. answer[i] is 'Fizz' if i is divisible by 3. answer[i] is 'Buzz' if i is divisible by 5. answer[i] is i (as a string) if none of the above conditions are true. The list should be for numbers from 1 to n.",
+    "input_format": "A single integer n.",
+    "output_format": "n lines, each containing the corresponding FizzBuzz output.",
+    "constraints": [
+      "1 <= n <= 10^4"
+    ],
+    "example_input": "15",
+    "example_output": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz",
+    "sample_testcases": [
+      {
+        "input": "3",
+        "output": "1\n2\nFizz"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5",
+        "output": "1\n2\nFizz\n4\nBuzz"
+      }
+    ]
+  },
+  {
+    "id": "E006",
+    "title": "Maximum Depth of Binary Tree",
+    "difficulty": "Easy",
+    "description": "Given the root of a binary tree, return its maximum depth. A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.",
+    "input_format": "First line n, number of nodes. Second line is a level-order representation of the tree with n values (integers or 'null').",
+    "output_format": "A single integer representing the maximum depth.",
+    "constraints": [
+      "0 <= n <= 10^4"
+    ],
+    "example_input": "7\n3 9 20 null null 15 7",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "7\n3 9 20 null null 15 7",
+        "output": "3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\n1 null 2",
+        "output": "2"
+      },
+      {
+        "input": "0\n",
+        "output": "0"
+      }
+    ]
+  },
+  {
+    "id": "E007",
+    "title": "Single Number",
+    "difficulty": "Easy",
+    "description": "Given a non-empty array of integers nums, every element appears twice except for one. Find that single one. You must implement a solution with a linear runtime complexity and use only constant extra space.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 3 * 10^4"
+    ],
+    "example_input": "5\n4 1 2 1 2",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "3\n2 2 1",
+        "output": "1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "E008",
+    "title": "Merge Two Sorted Lists",
+    "difficulty": "Easy",
+    "description": "You are given the heads of two sorted linked lists. Merge the two lists into one sorted list. The list should be made by splicing together the nodes of the first two lists.",
+    "input_format": "First line n, m. Second line n space-separated integers for list1. Third line m space-separated integers for list2.",
+    "output_format": "A single line of space-separated integers for the merged list.",
+    "constraints": [
+      "0 <= n, m <= 50"
+    ],
+    "example_input": "3 3\n1 2 4\n1 3 4",
+    "example_output": "1 1 2 3 4 4",
+    "sample_testcases": [
+      {
+        "input": "3 3\n1 2 4\n1 3 4",
+        "output": "1 1 2 3 4 4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "0 1\n\n0",
+        "output": "0"
+      }
+    ]
+  },
+  {
+    "id": "E009",
+    "title": "Best Time to Buy and Sell Stock",
+    "difficulty": "Easy",
+    "description": "You are given an array prices where prices[i] is the price of a given stock on the ith day. You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock. Return the maximum profit you can achieve. If you cannot achieve any profit, return 0.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 10^5"
+    ],
+    "example_input": "6\n7 1 5 3 6 4",
+    "example_output": "5",
+    "sample_testcases": [
+      {
+        "input": "6\n7 1 5 3 6 4",
+        "output": "5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n7 6 4 3 1",
+        "output": "0"
+      }
+    ]
+  },
+  {
+    "id": "E010",
+    "title": "Valid Anagram",
+    "difficulty": "Easy",
+    "description": "Given two strings s and t, return true if t is an anagram of s, and false otherwise. An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.",
+    "input_format": "Two lines, each containing a string.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= s.length, t.length <= 5 * 10^4"
+    ],
+    "example_input": "anagram\nnagaram",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "anagram\nnagaram",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "rat\ncar",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "E011",
+    "title": "Majority Element",
+    "difficulty": "Easy",
+    "description": "Given an array nums of size n, return the majority element. The majority element is the element that appears more than floor(n / 2) times. You may assume that the majority element always exists in the array.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 5 * 10^4"
+    ],
+    "example_input": "7\n2 2 1 1 1 2 2",
+    "example_output": "2",
+    "sample_testcases": [
+      {
+        "input": "3\n3 2 3",
+        "output": "3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "E012",
+    "title": "Move Zeroes",
+    "difficulty": "Easy",
+    "description": "Given an integer array nums, move all 0's to the end of it while maintaining the relative order of the non-zero elements. Note that you must do this in-place without making a copy of the array.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of n space-separated integers.",
+    "constraints": [
+      "1 <= n <= 10^4"
+    ],
+    "example_input": "5\n0 1 0 3 12",
+    "example_output": "1 3 12 0 0",
+    "sample_testcases": [
+      {
+        "input": "5\n0 1 0 3 12",
+        "output": "1 3 12 0 0"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n0",
+        "output": "0"
+      }
+    ]
+  },
+  {
+    "id": "E013",
+    "title": "Reverse Linked List",
+    "difficulty": "Easy",
+    "description": "Given the head of a singly linked list, reverse the list, and return the reversed list.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of n space-separated integers.",
+    "constraints": [
+      "0 <= n <= 5000"
+    ],
+    "example_input": "5\n1 2 3 4 5",
+    "example_output": "5 4 3 2 1",
+    "sample_testcases": [
+      {
+        "input": "5\n1 2 3 4 5",
+        "output": "5 4 3 2 1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "0\n",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "E014",
+    "title": "Valid Parentheses",
+    "difficulty": "Easy",
+    "description": "Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid. An input string is valid if: Open brackets must be closed by the same type of brackets. Open brackets must be closed in the correct order. Every close bracket has a corresponding open bracket of the same type.",
+    "input_format": "A single line string s.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= s.length <= 10^4"
+    ],
+    "example_input": "()[]{}",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "()[]{}",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "(]",
+        "output": "false"
+      },
+      {
+        "input": "{[]}",
+        "output": "true"
+      }
+    ]
+  },
+  {
+    "id": "E015",
+    "title": "Climbing Stairs",
+    "difficulty": "Easy",
+    "description": "You are climbing a staircase. It takes n steps to reach the top. Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?",
+    "input_format": "A single integer n.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 45"
+    ],
+    "example_input": "3",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "2",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1",
+        "output": "1"
+      },
+      {
+        "input": "4",
+        "output": "5"
+      }
+    ]
+  },
+  {
+    "id": "E016",
+    "title": "Invert Binary Tree",
+    "difficulty": "Easy",
+    "description": "Given the root of a binary tree, invert the tree, and return its root.",
+    "input_format": "First line n, number of nodes. Second line is a level-order representation of the tree with n values.",
+    "output_format": "A single line representing the level-order traversal of the inverted tree.",
+    "constraints": [
+      "0 <= n <= 100"
+    ],
+    "example_input": "7\n4 2 7 1 3 6 9",
+    "example_output": "4 7 2 9 6 3 1",
+    "sample_testcases": [
+      {
+        "input": "7\n4 2 7 1 3 6 9",
+        "output": "4 7 2 9 6 3 1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3\n2 1 3",
+        "output": "2 3 1"
+      }
+    ]
+  },
+  {
+    "id": "E017",
+    "title": "Length of Last Word",
+    "difficulty": "Easy",
+    "description": "Given a string s consisting of words and spaces, return the length of the last word in the string.",
+    "input_format": "A single line string s.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= s.length <= 10^4"
+    ],
+    "example_input": "Hello World",
+    "example_output": "5",
+    "sample_testcases": [
+      {
+        "input": "Hello World",
+        "output": "5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "   fly me   to   the moon  ",
+        "output": "4"
+      },
+      {
+        "input": "luffy is still joyboy",
+        "output": "6"
+      }
+    ]
+  },
+  {
+    "id": "E018",
+    "title": "Symmetric Tree",
+    "difficulty": "Easy",
+    "description": "Given the root of a binary tree, check whether it is a mirror of itself (i.e., symmetric around its center).",
+    "input_format": "First line n, number of nodes. Second line is a level-order representation of the tree with n values.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "0 <= n <= 1000"
+    ],
+    "example_input": "7\n1 2 2 3 4 4 3",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "7\n1 2 2 3 4 4 3",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "7\n1 2 2 null 3 null 3",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "E019",
+    "title": "Plus One",
+    "difficulty": "Easy",
+    "description": "You are given a large integer represented as an integer array digits, where each digits[i] is the ith digit of the integer. The digits are ordered from most significant to least significant in left-to-right order. The large integer does not contain any leading 0's. Increment the large integer by one and return the resulting array of digits.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of space-separated integers.",
+    "constraints": [
+      "1 <= n <= 100"
+    ],
+    "example_input": "3\n1 2 3",
+    "example_output": "1 2 4",
+    "sample_testcases": [
+      {
+        "input": "3\n1 2 3",
+        "output": "1 2 4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n9",
+        "output": "1 0"
+      },
+      {
+        "input": "4\n4 3 2 1",
+        "output": "4 3 2 2"
+      }
+    ]
+  },
+  {
+    "id": "E020",
+    "title": "Remove Duplicates from Sorted Array",
+    "difficulty": "Easy",
+    "description": "Given an integer array nums sorted in non-decreasing order, remove the duplicates in-place such that each unique element appears only once. The relative order of the elements should be kept the same. Return k, the number of unique elements.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "First line k. Second line the first k elements of the modified array.",
+    "constraints": [
+      "1 <= n <= 3 * 10^4"
+    ],
+    "example_input": "10\n0 0 1 1 1 2 2 3 3 4",
+    "example_output": "5\n0 1 2 3 4",
+    "sample_testcases": [
+      {
+        "input": "3\n1 1 2",
+        "output": "2\n1 2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n5",
+        "output": "1\n5"
+      }
+    ]
+  },
+  {
+    "id": "E021",
+    "title": "Missing Number",
+    "difficulty": "Easy",
+    "description": "Given an array nums containing n distinct numbers in the range [0, n], return the only number in the range that is missing from the array.",
+    "input_format": "First line n-1. Second line n-1 space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 10^4"
+    ],
+    "example_input": "3\n3 0 1",
+    "example_output": "2",
+    "sample_testcases": [
+      {
+        "input": "3\n3 0 1",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "9\n9 6 4 2 3 5 7 0 1",
+        "output": "8"
+      }
+    ]
+  },
+  {
+    "id": "E022",
+    "title": "Find the Index of the First Occurrence in a String",
+    "difficulty": "Easy",
+    "description": "Given two strings needle and haystack, return the index of the first occurrence of needle in haystack, or -1 if needle is not part of haystack.",
+    "input_format": "Two lines, the first is haystack, the second is needle.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= haystack.length, needle.length <= 10^4"
+    ],
+    "example_input": "sadbutsad\nsad",
+    "example_output": "0",
+    "sample_testcases": [
+      {
+        "input": "sadbutsad\nsad",
+        "output": "0"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "leetcode\nleeto",
+        "output": "-1"
+      }
+    ]
+  },
+  {
+    "id": "E023",
+    "title": "Power of Two",
+    "difficulty": "Easy",
+    "description": "Given an integer n, return true if it is a power of two. Otherwise, return false. An integer n is a power of two, if there exists an integer x such that n == 2^x.",
+    "input_format": "A single integer n.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "-2^31 <= n <= 2^31 - 1"
+    ],
+    "example_input": "16",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "1",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3",
+        "output": "false"
+      },
+      {
+        "input": "0",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "E024",
+    "title": "Fibonacci Number",
+    "difficulty": "Easy",
+    "description": "The Fibonacci numbers, commonly denoted F(n) form a sequence, called the Fibonacci sequence, such that each number is the sum of the two preceding ones, starting from 0 and 1. That is, F(0) = 0, F(1) = 1, F(n) = F(n - 1) + F(n - 2), for n > 1. Given n, calculate F(n).",
+    "input_format": "A single integer n.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "0 <= n <= 30"
+    ],
+    "example_input": "4",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "2",
+        "output": "1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "0",
+        "output": "0"
+      },
+      {
+        "input": "10",
+        "output": "55"
+      }
+    ]
+  },
+  {
+    "id": "E025",
+    "title": "Backspace String Compare",
+    "difficulty": "Easy",
+    "description": "Given two strings s and t, return true if they are equal when both are typed into empty text editors. '#' means a backspace character.",
+    "input_format": "Two lines, each containing a string.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= s.length, t.length <= 200"
+    ],
+    "example_input": "ab#c\nad#c",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "ab#c\nad#c",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "a#c\nb",
+        "output": "false"
+      },
+      {
+        "input": "y#fo##f\ny#f#o##f",
+        "output": "true"
+      }
+    ]
+  },
+  {
+    "id": "E026",
+    "title": "Binary Search",
+    "difficulty": "Easy",
+    "description": "Given an array of integers nums which is sorted in ascending order, and an integer target, write a function to search target in nums. If target exists, then return its index. Otherwise, return -1.",
+    "input_format": "First line n and target. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 10^4"
+    ],
+    "example_input": "6 9\n-1 0 3 5 9 12",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "6 9\n-1 0 3 5 9 12",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "6 2\n-1 0 3 5 9 12",
+        "output": "-1"
+      }
+    ]
+  },
+  {
+    "id": "E027",
+    "title": "Happy Number",
+    "difficulty": "Easy",
+    "description": "A happy number is a number defined by the following process: Starting with any positive integer, replace the number by the sum of the squares of its digits. Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1. Those numbers for which this process ends in 1 are happy. Return true if n is a happy number, and false if not.",
+    "input_format": "A single integer n.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= n <= 2^31 - 1"
+    ],
+    "example_input": "19",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "19",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2",
+        "output": "false"
+      },
+      {
+        "input": "7",
+        "output": "true"
+      }
+    ]
+  },
+  {
+    "id": "E028",
+    "title": "Isomorphic Strings",
+    "difficulty": "Easy",
+    "description": "Given two strings s and t, determine if they are isomorphic. Two strings s and t are isomorphic if the characters in s can be replaced to get t. All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character, but a character may map to itself.",
+    "input_format": "Two lines, each containing a string.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= s.length <= 5 * 10^4"
+    ],
+    "example_input": "egg\nadd",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "egg\nadd",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "foo\nbar",
+        "output": "false"
+      },
+      {
+        "input": "paper\ntitle",
+        "output": "true"
+      }
+    ]
+  },
+  {
+    "id": "E029",
+    "title": "Squares of a Sorted Array",
+    "difficulty": "Easy",
+    "description": "Given an integer array nums sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of n space-separated integers.",
+    "constraints": [
+      "1 <= n <= 10^4"
+    ],
+    "example_input": "5\n-4 -1 0 3 10",
+    "example_output": "0 1 9 16 100",
+    "sample_testcases": [
+      {
+        "input": "5\n-4 -1 0 3 10",
+        "output": "0 1 9 16 100"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n-7 -3 2 3 11",
+        "output": "4 9 9 49 121"
+      }
+    ]
+  },
+  {
+    "id": "E030",
+    "title": "Linked List Cycle",
+    "difficulty": "Easy",
+    "description": "Given head, the head of a linked list, determine if the linked list has a cycle in it. There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer.",
+    "input_format": "First line n and pos. Second line n space-separated integers. pos is the 0-indexed position that the tail connects to (-1 for no cycle).",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "0 <= n <= 10^4"
+    ],
+    "example_input": "4 1\n3 2 0 -4",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "4 1\n3 2 0 -4",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2 0\n1 2",
+        "output": "true"
+      },
+      {
+        "input": "1 -1\n1",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "E031",
+    "title": "Palindrome Number",
+    "difficulty": "Easy",
+    "description": "Given an integer x, return true if x is a palindrome, and false otherwise.",
+    "input_format": "A single integer x.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "-2^31 <= x <= 2^31 - 1"
+    ],
+    "example_input": "121",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "121",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "-121",
+        "output": "false"
+      },
+      {
+        "input": "10",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "E032",
+    "title": "Roman to Integer",
+    "difficulty": "Easy",
+    "description": "Given a roman numeral, convert it to an integer. Roman numerals are represented by seven different symbols: I, V, X, L, C, D and M.",
+    "input_format": "A single line containing a roman numeral string.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= s.length <= 15"
+    ],
+    "example_input": "MCMXCIV",
+    "example_output": "1994",
+    "sample_testcases": [
+      {
+        "input": "LVIII",
+        "output": "58"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "III",
+        "output": "3"
+      }
+    ]
+  },
+  {
+    "id": "E033",
+    "title": "Longest Common Prefix",
+    "difficulty": "Easy",
+    "description": "Write a function to find the longest common prefix string amongst an array of strings. If there is no common prefix, return an empty string ''.",
+    "input_format": "First line n. The next n lines each contain a string.",
+    "output_format": "A single string.",
+    "constraints": [
+      "1 <= n <= 200",
+      "0 <= strs[i].length <= 200"
+    ],
+    "example_input": "3\nflower\nflow\nflight",
+    "example_output": "fl",
+    "sample_testcases": [
+      {
+        "input": "3\nflower\nflow\nflight",
+        "output": "fl"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3\ndog\nracecar\ncar",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "E034",
+    "title": "Same Tree",
+    "difficulty": "Easy",
+    "description": "Given the roots of two binary trees p and q, write a function to check if they are the same or not. Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.",
+    "input_format": "First line n, m. Second line level-order for tree p. Third line level-order for tree q.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "0 <= n, m <= 100"
+    ],
+    "example_input": "3 3\n1 2 3\n1 2 3",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "3 3\n1 2 3\n1 2 3",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2 2\n1 2\n1 null 2",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "E035",
+    "title": "Excel Sheet Column Number",
+    "difficulty": "Easy",
+    "description": "Given a string columnTitle that represents the column title as it appears in an Excel sheet, return its corresponding column number.",
+    "input_format": "A single line string.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= columnTitle.length <= 7"
+    ],
+    "example_input": "ZY",
+    "example_output": "701",
+    "sample_testcases": [
+      {
+        "input": "A",
+        "output": "1"
+      },
+      {
+        "input": "AB",
+        "output": "28"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "FXSHRXW",
+        "output": "2147483647"
+      }
+    ]
+  },
+  {
+    "id": "E036",
+    "title": "Intersection of Two Arrays",
+    "difficulty": "Easy",
+    "description": "Given two integer arrays nums1 and nums2, return an array of their intersection. Each element in the result must be unique and you may return the result in any order.",
+    "input_format": "First line n, m. Second line n integers for nums1. Third line m integers for nums2.",
+    "output_format": "A single line of space-separated integers.",
+    "constraints": [
+      "1 <= n, m <= 1000"
+    ],
+    "example_input": "4 2\n1 2 2 1\n2 2",
+    "example_output": "2",
+    "sample_testcases": [
+      {
+        "input": "4 2\n1 2 2 1\n2 2",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5 5\n4 9 5\n9 4 9 8 4",
+        "output": "9 4"
+      }
+    ]
+  },
+  {
+    "id": "E037",
+    "title": "Middle of the Linked List",
+    "difficulty": "Easy",
+    "description": "Given the head of a singly linked list, return the middle node of the linked list. If there are two middle nodes, return the second middle node.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of space-separated integers from the middle node onwards.",
+    "constraints": [
+      "1 <= n <= 100"
+    ],
+    "example_input": "5\n1 2 3 4 5",
+    "example_output": "3 4 5",
+    "sample_testcases": [
+      {
+        "input": "6\n1 2 3 4 5 6",
+        "output": "4 5 6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "E038",
+    "title": "Convert Sorted Array to Binary Search Tree",
+    "difficulty": "Easy",
+    "description": "Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line representing the level-order traversal of the constructed tree.",
+    "constraints": [
+      "1 <= n <= 10^4"
+    ],
+    "example_input": "5\n-10 -3 0 5 9",
+    "example_output": "0 -3 9 -10 null 5",
+    "sample_testcases": [
+      {
+        "input": "5\n-10 -3 0 5 9",
+        "output": "0 -3 9 -10 null 5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3\n1 2 3",
+        "output": "2 1 3"
+      }
+    ]
+  },
+  {
+    "id": "E039",
+    "title": "Verifying an Alien Dictionary",
+    "difficulty": "Easy",
+    "description": "In an alien language, surprisingly, they also use English lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters. Given a sequence of words written in the alien language, and the order of the alphabet, return true if and only if the given words are sorted lexicographically in this alien language.",
+    "input_format": "First line is a string of 26 unique lowercase letters representing the alien alphabet order. Second line is n. The next n lines contain the words.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= n <= 100",
+      "1 <= words[i].length <= 20"
+    ],
+    "example_input": "hlabcdefgijkmnopqrstuvwxyz\n2\nhello\nleetcode",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "hlabcdefgijkmnopqrstuvwxyz\n2\nhello\nleetcode",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "worldabcefghijkmnpqstuvxyz\n3\nword\nworld\nrow",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "E040",
+    "title": "First Unique Character in a String",
+    "difficulty": "Easy",
+    "description": "Given a string s, find the first non-repeating character in it and return its index. If it does not exist, return -1.",
+    "input_format": "A single line string s.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= s.length <= 10^5"
+    ],
+    "example_input": "leetcode",
+    "example_output": "0",
+    "sample_testcases": [
+      {
+        "input": "leetcode",
+        "output": "0"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "loveleetcode",
+        "output": "2"
+      },
+      {
+        "input": "aabb",
+        "output": "-1"
+      }
+    ]
+  },
+  {
+    "id": "E041",
+    "title": "Running Sum of 1d Array",
+    "difficulty": "Easy",
+    "description": "Given an array nums. We define a running sum of an array as runningSum[i] = sum(nums[0]…nums[i]). Return the running sum of nums.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of n space-separated integers.",
+    "constraints": [
+      "1 <= n <= 1000"
+    ],
+    "example_input": "4\n1 2 3 4",
+    "example_output": "1 3 6 10",
+    "sample_testcases": [
+      {
+        "input": "4\n1 2 3 4",
+        "output": "1 3 6 10"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n1 1 1 1 1",
+        "output": "1 2 3 4 5"
+      }
+    ]
+  },
+  {
+    "id": "E042",
+    "title": "Richest Customer Wealth",
+    "difficulty": "Easy",
+    "description": "You are given an m x n integer grid accounts where accounts[i][j] is the amount of money the i-th customer has in the j-th bank. Return the wealth that the richest customer has. A customer's wealth is the amount of money they have in all their bank accounts.",
+    "input_format": "First line m and n. The next m lines contain n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= m, n <= 50"
+    ],
+    "example_input": "2 3\n1 2 3\n3 2 1",
+    "example_output": "6",
+    "sample_testcases": [
+      {
+        "input": "2 3\n1 2 3\n3 2 1",
+        "output": "6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 3\n1 5\n7 3\n3 5",
+        "output": "10"
+      }
+    ]
+  },
+  {
+    "id": "E043",
+    "title": "Number of 1 Bits",
+    "difficulty": "Easy",
+    "description": "Write a function that takes the binary representation of an unsigned integer and returns the number of '1' bits it has (also known as the Hamming weight).",
+    "input_format": "A single string representing a 32-bit unsigned integer in binary.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "Input is a binary string of length 32."
+    ],
+    "example_input": "00000000000000000000000000001011",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "00000000000000000000000000001011",
+        "output": "3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "11111111111111111111111111111101",
+        "output": "31"
+      }
+    ]
+  },
+  {
+    "id": "E044",
+    "title": "Min Cost Climbing Stairs",
+    "difficulty": "Easy",
+    "description": "You are given an integer array cost where cost[i] is the cost of ith step on a staircase. Once you pay the cost, you can either climb one or two steps. You can either start from the step with index 0, or the step with index 1. Return the minimum cost to reach the top of the floor.",
+    "input_format": "First line n. Second line n space-separated integers for costs.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "2 <= n <= 1000"
+    ],
+    "example_input": "3\n10 15 20",
+    "example_output": "15",
+    "sample_testcases": [
+      {
+        "input": "3\n10 15 20",
+        "output": "15"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "10\n1 100 1 1 1 100 1 1 100 1",
+        "output": "6"
+      }
+    ]
+  },
+  {
+    "id": "E045",
+    "title": "Kids With the Greatest Number of Candies",
+    "difficulty": "Easy",
+    "description": "There are n kids with candies. You are given an integer array candies, where each candies[i] represents the number of candies the ith kid has, and an integer extraCandies. For each kid, check if there is a way to distribute extraCandies among the kids such that they can have the greatest number of candies among them. Notice that multiple kids can have the greatest number of candies.",
+    "input_format": "First line n and extraCandies. Second line n space-separated integers.",
+    "output_format": "A single line of n space-separated boolean values ('true' or 'false').",
+    "constraints": [
+      "2 <= n <= 100"
+    ],
+    "example_input": "5 3\n2 3 5 1 3",
+    "example_output": "true true true false true",
+    "sample_testcases": [
+      {
+        "input": "5 3\n2 3 5 1 3",
+        "output": "true true true false true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 1\n4 2 1",
+        "output": "true false false"
+      }
+    ]
+  },
+  {
+    "id": "E046",
+    "title": "Find Numbers with Even Number of Digits",
+    "difficulty": "Easy",
+    "description": "Given an array nums of integers, return how many of them contain an even number of digits.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 500",
+      "1 <= nums[i] <= 10^5"
+    ],
+    "example_input": "4\n12 345 2 6",
+    "example_output": "2",
+    "sample_testcases": [
+      {
+        "input": "4\n12 345 2 6",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "4\n555 901 482 1771",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "E047",
+    "title": "Path Sum",
+    "difficulty": "Easy",
+    "description": "Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.",
+    "input_format": "First line n (number of nodes) and targetSum. Second line level-order representation of the tree.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "0 <= n <= 5000"
+    ],
+    "example_input": "11 22\n5 4 8 11 null 13 4 7 2 null null null 1",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "11 22\n5 4 8 11 null 13 4 7 2 null null null 1",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 5\n1 2 3",
+        "output": "false"
+      },
+      {
+        "input": "0 0\n",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "E048",
+    "title": "Can Place Flowers",
+    "difficulty": "Easy",
+    "description": "You have a long flowerbed in which some of the plots are planted, and some are not. However, flowers cannot be planted in adjacent plots. Given an integer array flowerbed containing 0s and 1s, where 0 means empty and 1 means not empty, and an integer n, return if n new flowers can be planted in the flowerbed without violating the no-adjacent-flowers rule.",
+    "input_format": "First line m (length of flowerbed) and n (flowers to plant). Second line m space-separated integers (0s and 1s).",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= m <= 2 * 10^4",
+      "0 <= n <= m"
+    ],
+    "example_input": "5 1\n1 0 0 0 1",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "5 1\n1 0 0 0 1",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5 2\n1 0 0 0 1",
+        "output": "false"
+      },
+      {
+        "input": "3 2\n0 0 0",
+        "output": "true"
+      }
+    ]
+  },
+  {
+    "id": "E049",
+    "title": "Maximum Average Subarray I",
+    "difficulty": "Easy",
+    "description": "You are given an integer array nums consisting of n elements, and an integer k. Find a contiguous subarray whose length is equal to k that has the maximum average value and return this value.",
+    "input_format": "First line n and k. Second line n space-separated integers.",
+    "output_format": "A single floating-point number.",
+    "constraints": [
+      "1 <= k <= n <= 10^5"
+    ],
+    "example_input": "6 4\n1 12 -5 -6 50 3",
+    "example_output": "12.75",
+    "sample_testcases": [
+      {
+        "input": "6 4\n1 12 -5 -6 50 3",
+        "output": "12.75"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1 1\n5",
+        "output": "5.0"
+      }
+    ]
+  },
+  {
+    "id": "E050",
+    "title": "Find All Numbers Disappeared in an Array",
+    "difficulty": "Easy",
+    "description": "Given an array nums of n integers where nums[i] is in the range [1, n], return an array of all the integers in the range [1, n] that do not appear in nums.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of space-separated integers representing the disappeared numbers.",
+    "constraints": [
+      "1 <= n <= 10^5"
+    ],
+    "example_input": "8\n4 3 2 7 8 2 3 1",
+    "example_output": "5 6",
+    "sample_testcases": [
+      {
+        "input": "8\n4 3 2 7 8 2 3 1",
+        "output": "5 6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\n1 1",
+        "output": "2"
+      }
+    ]
+  },
+  {
+    "id": "H001",
+    "title": "Median of Two Sorted Arrays",
+    "difficulty": "Hard",
+    "description": "Given two sorted arrays `nums1` and `nums2` of size `m` and `n` respectively, return the median of the two sorted arrays. The overall run time complexity should be O(log(m+n)).",
+    "input_format": "First line m, n. Second line m space-separated integers for nums1. Third line n space-separated integers for nums2.",
+    "output_format": "A single floating-point number representing the median.",
+    "constraints": [
+      "m + n >= 1",
+      "0 <= m, n <= 1000",
+      "-10^6 <= nums[i] <= 10^6"
+    ],
+    "example_input": "2 1\n1 3\n2",
+    "example_output": "2.0",
+    "sample_testcases": [
+      {
+        "input": "2 2\n1 2\n3 4",
+        "output": "2.5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 0\n1 2 3\n",
+        "output": "2.0"
+      },
+      {
+        "input": "4 1\n1 2 3 4\n5",
+        "output": "3.0"
+      }
+    ]
+  },
+  {
+    "id": "H002",
+    "title": "Trapping Rain Water",
+    "difficulty": "Hard",
+    "description": "Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.",
+    "input_format": "First line n. Second line n space-separated integers representing the elevation map.",
+    "output_format": "A single integer representing the total amount of trapped water.",
+    "constraints": [
+      "1 <= n <= 2 * 10^4",
+      "0 <= height[i] <= 10^5"
+    ],
+    "example_input": "12\n0 1 0 2 1 0 1 3 2 1 2 1",
+    "example_output": "6",
+    "sample_testcases": [
+      {
+        "input": "12\n0 1 0 2 1 0 1 3 2 1 2 1",
+        "output": "6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "6\n4 2 0 3 2 5",
+        "output": "9"
+      }
+    ]
+  },
+  {
+    "id": "H003",
+    "title": "Regular Expression Matching",
+    "difficulty": "Hard",
+    "description": "Given an input string `s` and a pattern `p`, implement regular expression matching with support for '.' and '*'. '.' matches any single character. '*' matches zero or more of the preceding element. The matching should cover the entire input string (not partial).",
+    "input_format": "First line: string s. Second line: pattern p.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "1 <= s.length <= 20",
+      "1 <= p.length <= 30",
+      "s contains only lowercase English letters.",
+      "p contains only lowercase English letters, '.', and '*'."
+    ],
+    "example_input": "aab\nc*a*b",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "aa\na",
+        "output": "false"
+      },
+      {
+        "input": "aa\na*",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "mississippi\nmis*is*p*.",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "H004",
+    "title": "Merge k Sorted Lists",
+    "difficulty": "Hard",
+    "description": "You are given an array of k linked-lists, each linked-list is sorted in ascending order. Merge all the linked-lists into one sorted linked-list and return it.",
+    "input_format": "First line k. The next k lines contain a space-separated list of integers for each list.",
+    "output_format": "A single line of space-separated integers for the merged list.",
+    "constraints": [
+      "0 <= k <= 10^4",
+      "0 <= lists[i].length <= 500"
+    ],
+    "example_input": "3\n1 4 5\n1 3 4\n2 6",
+    "example_output": "1 1 2 3 4 4 5 6",
+    "sample_testcases": [
+      {
+        "input": "3\n1 4 5\n1 3 4\n2 6",
+        "output": "1 1 2 3 4 4 5 6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n",
+        "output": ""
+      },
+      {
+        "input": "0\n",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "H005",
+    "title": "First Missing Positive",
+    "difficulty": "Hard",
+    "description": "Given an unsorted integer array nums, return the smallest missing positive integer. You must implement an algorithm that runs in O(n) time and uses constant extra space.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-2^31 <= nums[i] <= 2^31 - 1"
+    ],
+    "example_input": "4\n3 4 -1 1",
+    "example_output": "2",
+    "sample_testcases": [
+      {
+        "input": "3\n1 2 0",
+        "output": "3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n7 8 9 11 12",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "H006",
+    "title": "Sliding Window Maximum",
+    "difficulty": "Hard",
+    "description": "You are given an array of integers nums, there is a sliding window of size k which is moving from the very left of the array to the very right. You can only see the k numbers in the window. Each time the sliding window moves right by one position. Return the max sliding window.",
+    "input_format": "First line n and k. Second line n space-separated integers.",
+    "output_format": "A single line of space-separated integers, representing the maximum in each window.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= k <= n"
+    ],
+    "example_input": "8 3\n1 3 -1 -3 5 3 6 7",
+    "example_output": "3 3 5 5 6 7",
+    "sample_testcases": [
+      {
+        "input": "8 3\n1 3 -1 -3 5 3 6 7",
+        "output": "3 3 5 5 6 7"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1 1\n1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "H007",
+    "title": "Largest Rectangle in Histogram",
+    "difficulty": "Hard",
+    "description": "Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "0 <= heights[i] <= 10^4"
+    ],
+    "example_input": "6\n2 1 5 6 2 3",
+    "example_output": "10",
+    "sample_testcases": [
+      {
+        "input": "6\n2 1 5 6 2 3",
+        "output": "10"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\n2 4",
+        "output": "4"
+      }
+    ]
+  },
+  {
+    "id": "H008",
+    "title": "Maximal Rectangle",
+    "difficulty": "Hard",
+    "description": "Given a m x n binary matrix filled with 0's and 1's, find the largest rectangle containing only 1's and return its area.",
+    "input_format": "First line m and n. The next m lines contain n characters ('1' or '0').",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= m, n <= 200"
+    ],
+    "example_input": "4 5\n10100\n10111\n11111\n10010",
+    "example_output": "6",
+    "sample_testcases": [
+      {
+        "input": "4 5\n10100\n10111\n11111\n10010",
+        "output": "6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1 1\n0",
+        "output": "0"
+      },
+      {
+        "input": "1 1\n1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "H009",
+    "title": "Word Break II",
+    "difficulty": "Hard",
+    "description": "Given a string s and a dictionary of strings wordDict, add spaces in s to construct a sentence where each word is a valid dictionary word. Return all such possible sentences in any order.",
+    "input_format": "First line is the string s. Second line is n, number of words in dictionary. The next n lines contain the dictionary words.",
+    "output_format": "Each line contains a valid sentence.",
+    "constraints": [
+      "1 <= s.length <= 20",
+      "1 <= wordDict.length <= 1000"
+    ],
+    "example_input": "catsanddog\n5\ncat\ncats\nand\nsand\ndog",
+    "example_output": "cat sand dog\ncats and dog",
+    "sample_testcases": [
+      {
+        "input": "catsanddog\n5\ncat\ncats\nand\nsand\ndog",
+        "output": "cat sand dog\ncats and dog"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "pineapplepenapple\n4\napple\npen\napplepen\npineapple",
+        "output": "pine apple pen apple\npineapple pen apple"
+      }
+    ]
+  },
+  {
+    "id": "H010",
+    "title": "N-Queens",
+    "difficulty": "Hard",
+    "description": "The n-queens puzzle is the problem of placing n queens on an n x n chessboard such that no two queens attack each other. Given an integer n, return all distinct solutions to the n-queens puzzle. You may return the answer in any order. Each solution contains a distinct board configuration of the n-queens' placement, where 'Q' and '.' both indicate a queen and an empty space, respectively.",
+    "input_format": "A single integer n.",
+    "output_format": "Each solution as an n x n grid on n lines, with solutions separated by a blank line.",
+    "constraints": [
+      "1 <= n <= 9"
+    ],
+    "example_input": "4",
+    "example_output": ".Q..\n...Q\nQ...\n..Q.\n\n..Q.\nQ...\n...Q\n.Q..",
+    "sample_testcases": [
+      {
+        "input": "1",
+        "output": "Q"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "4",
+        "output": ".Q..\n...Q\nQ...\n..Q.\n\n..Q.\nQ...\n...Q\n.Q.."
+      }
+    ]
+  },
+  {
+    "id": "H011",
+    "title": "Minimum Window Substring",
+    "difficulty": "Hard",
+    "description": "Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string.",
+    "input_format": "Two lines, string s and string t.",
+    "output_format": "A single string.",
+    "constraints": [
+      "1 <= m, n <= 10^5"
+    ],
+    "example_input": "ADOBECODEBANC\nABC",
+    "example_output": "BANC",
+    "sample_testcases": [
+      {
+        "input": "ADOBECODEBANC\nABC",
+        "output": "BANC"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "a\naa",
+        "output": ""
+      },
+      {
+        "input": "a\na",
+        "output": "a"
+      }
+    ]
+  },
+  {
+    "id": "H012",
+    "title": "Find the Longest Valid Parentheses",
+    "difficulty": "Hard",
+    "description": "Given a string containing just the characters '(' and ')', find the length of the longest valid (well-formed) parentheses substring.",
+    "input_format": "A single string.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "0 <= s.length <= 3 * 10^4"
+    ],
+    "example_input": ")()())",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "(()",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "",
+        "output": "0"
+      },
+      {
+        "input": "()(()",
+        "output": "2"
+      }
+    ]
+  },
+  {
+    "id": "H013",
+    "title": "Candy",
+    "difficulty": "Hard",
+    "description": "There are n children standing in a line. Each child is assigned a rating value given in the integer array ratings. You are giving candies to these children subjected to the following requirements: Each child must have at least one candy. Children with a higher rating get more candies than their neighbors. Return the minimum number of candies you need to have to distribute.",
+    "input_format": "First line n. Second line n space-separated integers for ratings.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 2 * 10^4"
+    ],
+    "example_input": "3\n1 0 2",
+    "example_output": "5",
+    "sample_testcases": [
+      {
+        "input": "3\n1 0 2",
+        "output": "5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3\n1 2 2",
+        "output": "4"
+      }
+    ]
+  },
+  {
+    "id": "H014",
+    "title": "Binary Tree Maximum Path Sum",
+    "difficulty": "Hard",
+    "description": "A path in a binary tree is a sequence of nodes where each pair of adjacent nodes in the sequence has an edge connecting them. A node can only appear in the sequence at most once. Note that the path does not need to pass through the root. The path sum of a path is the sum of the node's values in the path. Given the root of a binary tree, return the maximum path sum of any non-empty path.",
+    "input_format": "First line n, number of nodes. Second line is a level-order representation of the tree.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 3 * 10^4"
+    ],
+    "example_input": "7\n-10 9 20 null null 15 7",
+    "example_output": "42",
+    "sample_testcases": [
+      {
+        "input": "3\n1 2 3",
+        "output": "6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n-3",
+        "output": "-3"
+      }
+    ]
+  },
+  {
+    "id": "H015",
+    "title": "Text Justification",
+    "difficulty": "Hard",
+    "description": "Given an array of strings words and a width maxWidth, format the text such that each line has exactly maxWidth characters and is fully (left and right) justified. You should pack your words in a greedy approach; that is, pack as many words as you can in each line. Pad extra spaces ' ' when necessary so that each line has exactly maxWidth characters. Extra spaces between words should be distributed as evenly as possible. If the number of spaces on a line does not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right. For the last line of text, it should be left-justified, and no extra space is inserted between words.",
+    "input_format": "First line maxWidth. Second line n. The next n lines contain the words.",
+    "output_format": "The formatted text, with each line on a new line.",
+    "constraints": [
+      "1 <= words.length <= 300",
+      "1 <= words[i].length <= 20",
+      "1 <= maxWidth <= 100"
+    ],
+    "example_input": "16\n7\nThis\nis\nan\nexample\nof\ntext\njustification.",
+    "example_output": "This    is    an\nexample  of text\njustification.  ",
+    "sample_testcases": [
+      {
+        "input": "16\n7\nThis\nis\nan\nexample\nof\ntext\njustification.",
+        "output": "This    is    an\nexample  of text\njustification.  "
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "20\n6\nScience\nis\nwhat\nwe\nunderstand\nwell",
+        "output": "Science  is  what we\nunderstand      well"
+      }
+    ]
+  },
+  {
+    "id": "H016",
+    "title": "Sudoku Solver",
+    "difficulty": "Hard",
+    "description": "Write a program to solve a Sudoku puzzle by filling the empty cells. A sudoku solution must satisfy all of the following rules: 1. Each of the digits 1-9 must occur exactly once in each row. 2. Each of the digits 1-9 must occur exactly once in each column. 3. Each of the digits 1-9 must occur exactly once in each of the nine 3x3 sub-boxes of the grid. The '.' character indicates empty cells.",
+    "input_format": "9 lines, each with 9 characters (digits '1'-'9' or '.').",
+    "output_format": "The solved 9x9 Sudoku grid.",
+    "constraints": [
+      "The given board will have a unique solution."
+    ],
+    "example_input": "53..7....\n6..195...\n.98....6.\n8...6...3\n4..8.3..1\n7...2...6\n.6....28.\n...419..5\n....8..79",
+    "example_output": "534678912\n672195348\n198342567\n859761423\n426853791\n713924856\n961537284\n287419635\n345286179",
+    "sample_testcases": [],
+    "hidden_testcases": []
+  },
+  {
+    "id": "H017",
+    "title": "Edit Distance",
+    "difficulty": "Hard",
+    "description": "Given two strings word1 and word2, return the minimum number of operations required to convert word1 to word2. You have the following three operations permitted on a word: Insert a character, Delete a character, Replace a character.",
+    "input_format": "Two lines, each with a string.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "0 <= word1.length, word2.length <= 500"
+    ],
+    "example_input": "horse\nros",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "intention\nexecution",
+        "output": "5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "a\nb",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "H018",
+    "title": "Substring with Concatenation of All Words",
+    "difficulty": "Hard",
+    "description": "You are given a string s and an array of strings words of the same length. Return all starting indices of substring(s) in s that is a concatenation of each word in words exactly once, in any order, and without any intervening characters.",
+    "input_format": "First line string s. Second line n. Next n lines are the words.",
+    "output_format": "A single line of space-separated indices.",
+    "constraints": [
+      "1 <= s.length <= 10^4",
+      "1 <= words.length <= 5000",
+      "1 <= words[i].length <= 30"
+    ],
+    "example_input": "barfoothefoobarman\n2\nfoo\nbar",
+    "example_output": "0 9",
+    "sample_testcases": [
+      {
+        "input": "barfoothefoobarman\n2\nfoo\nbar",
+        "output": "0 9"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "wordgoodgoodgoodbestword\n4\nword\ngood\nbest\nword",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "H019",
+    "title": "Number of Islands II",
+    "difficulty": "Hard",
+    "description": "You are given an m x n binary grid, initially filled with water. We may perform an addLand operation which turns the water at position (row, col) into a land. Given a list of positions to operate on, return an array of integers representing the number of islands after each addLand operation. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.",
+    "input_format": "First line m, n, and k (number of operations). The next k lines have row, col for each operation.",
+    "output_format": "A single line of k space-separated integers.",
+    "constraints": [
+      "1 <= m, n <= 10^4",
+      "1 <= k <= 10^4"
+    ],
+    "example_input": "3 3 4\n0 0\n0 1\n1 2\n2 1",
+    "example_output": "1 1 2 3",
+    "sample_testcases": [
+      {
+        "input": "3 3 4\n0 0\n0 1\n1 2\n2 1",
+        "output": "1 1 2 3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 3 5\n0 1\n1 2\n2 1\n1 0\n1 1",
+        "output": "1 2 3 4 1"
+      }
+    ]
+  },
+  {
+    "id": "H020",
+    "title": "Serialize and Deserialize Binary Tree",
+    "difficulty": "Hard",
+    "description": "Serialization is the process of converting a data structure or object into a sequence of bits so that it can be stored in a file or memory buffer, or transmitted across a network connection link to be reconstructed later in the same or another computer environment. Design an algorithm to serialize and deserialize a binary tree. There is no restriction on how your serialization/deserialization algorithm should work.",
+    "input_format": "For testing: First line n, number of nodes. Second line is a level-order representation of the tree.",
+    "output_format": "The same level-order representation, confirming successful serialization and deserialization.",
+    "constraints": [
+      "0 <= n <= 10^4"
+    ],
+    "example_input": "7\n1 2 3 null null 4 5",
+    "example_output": "1 2 3 null null 4 5",
+    "sample_testcases": [
+      {
+        "input": "7\n1 2 3 null null 4 5",
+        "output": "1 2 3 null null 4 5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "0\n",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "H021",
+    "title": "Word Ladder II",
+    "difficulty": "Hard",
+    "description": "A transformation sequence from word beginWord to word endWord using a dictionary wordList is a sequence of words beginWord -> s1 -> s2 -> ... -> sk such that every adjacent pair of words differs by a single letter, and every si is in wordList. Given two words, beginWord and endWord, and a dictionary wordList, return all the shortest transformation sequences from beginWord to endWord, or an empty list if no such sequence exists.",
+    "input_format": "First line beginWord, endWord. Second line n. Next n lines are dictionary words.",
+    "output_format": "Each line represents one shortest transformation sequence.",
+    "constraints": [
+      "1 <= beginWord.length <= 5"
+    ],
+    "example_input": "hit cog\n6\nhot\ndot\ndog\nlot\nlog\ncog",
+    "example_output": "hit hot dot dog cog\nhit hot lot log cog",
+    "sample_testcases": [
+      {
+        "input": "hit cog\n6\nhot\ndot\ndog\nlot\nlog\ncog",
+        "output": "hit hot dot dog cog\nhit hot lot log cog"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "hit cog\n5\nhot\ndot\ndog\nlot\nlog",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "H022",
+    "title": "Wildcard Matching",
+    "difficulty": "Hard",
+    "description": "Given an input string (s) and a pattern (p), implement wildcard pattern matching with support for '?' and '*' where '?' matches any single character and '*' matches any sequence of characters (including the empty sequence). The matching should cover the entire input string.",
+    "input_format": "Two lines, string s and pattern p.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "0 <= s.length, p.length <= 2000"
+    ],
+    "example_input": "adceb\n*a*b",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "aa\na",
+        "output": "false"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "acdcb\na*c?b",
+        "output": "false"
+      },
+      {
+        "input": "cb\n?a",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "H023",
+    "title": "Trapping Rain Water II",
+    "difficulty": "Hard",
+    "description": "Given an m x n integer matrix heightMap representing the height of each unit cell in a 2D elevation map, return the volume of water it can trap after raining.",
+    "input_format": "First line m and n. The next m lines contain n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= m, n <= 200"
+    ],
+    "example_input": "3 6\n1 4 3 1 3 2\n3 2 1 3 2 4\n2 3 3 2 3 1",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "3 6\n1 4 3 1 3 2\n3 2 1 3 2 4\n2 3 3 2 3 1",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5 4\n12 13 1 12\n13 4 13 12\n13 8 10 12\n12 13 12 12\n13 13 13 13",
+        "output": "14"
+      }
+    ]
+  },
+  {
+    "id": "H024",
+    "title": "Burst Balloons",
+    "difficulty": "Hard",
+    "description": "You are given n balloons, indexed from 0 to n - 1. Each balloon is painted with a number on it represented by an array nums. You are asked to burst all the balloons. If you burst the ith balloon, you will get nums[left] * nums[i] * nums[right] coins. Here left and right are adjacent indices of i. After the burst, the left and right then become adjacent. Return the maximum coins you can collect by bursting the balloons wisely.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 300",
+      "0 <= nums[i] <= 100"
+    ],
+    "example_input": "4\n3 1 5 8",
+    "example_output": "167",
+    "sample_testcases": [
+      {
+        "input": "4\n3 1 5 8",
+        "output": "167"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\n1 5",
+        "output": "10"
+      }
+    ]
+  },
+  {
+    "id": "H025",
+    "title": "LFU Cache",
+    "difficulty": "Hard",
+    "description": "Design and implement a data structure for a Least Frequently Used (LFU) cache. It should support get and put operations. `get(key)` - Get the value of the key if the key exists in the cache, otherwise return -1. `put(key, value)` - Set or insert the value if the key is not already present. When the cache reaches its capacity, it should invalidate the least frequently used item before inserting a new item. For a tie in usage frequency, the least recently used key should be evicted.",
+    "input_format": "First line capacity. Second line q (number of queries). The next q lines are queries: 'p key value' for put, 'g key' for get.",
+    "output_format": "For each 'g' query, print the result on a new line.",
+    "constraints": [
+      "1 <= capacity <= 10^4",
+      "1 <= q <= 2 * 10^5"
+    ],
+    "example_input": "2\n8\np 1 1\np 2 2\ng 1\np 3 3\ng 2\ng 3\np 4 4\ng 1",
+    "example_output": "1\n-1\n3\n-1",
+    "sample_testcases": [],
+    "hidden_testcases": []
+  },
+  {
+    "id": "H026",
+    "title": "Find Median from Data Stream",
+    "difficulty": "Hard",
+    "description": "The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values. Implement the MedianFinder class: `addNum(int num)` adds the integer num from the data stream to the data structure. `findMedian()` returns the median of all elements so far.",
+    "input_format": "First line q (number of queries). The next q lines are queries: 'a num' to add, 'f' to find median.",
+    "output_format": "For each 'f' query, print the median on a new line.",
+    "constraints": [
+      "1 <= q <= 5 * 10^4"
+    ],
+    "example_input": "5\na 1\na 2\nf\na 3\nf",
+    "example_output": "1.5\n2.0",
+    "sample_testcases": [],
+    "hidden_testcases": []
+  },
+  {
+    "id": "H027",
+    "title": "Max Points on a Line",
+    "difficulty": "Hard",
+    "description": "Given an array of points where points[i] = [xi, yi] represents a point on the X-Y plane, return the maximum number of points that lie on the same straight line.",
+    "input_format": "First line n. The next n lines each contain two space-separated integers xi and yi.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 300"
+    ],
+    "example_input": "3\n1 1\n2 2\n3 3",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "6\n1 1\n3 2\n5 3\n4 1\n2 3\n1 4",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n0 0",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "H028",
+    "title": "Russian Doll Envelopes",
+    "difficulty": "Hard",
+    "description": "You are given a 2D array of integers envelopes where envelopes[i] = [wi, hi] represents the width and the height of an envelope. One envelope can fit into another if and only if both the width and height of one envelope are greater than the other envelope's width and height. Return the maximum number of envelopes you can Russian doll (i.e., put one inside the other). Note: you cannot rotate an envelope.",
+    "input_format": "First line n. The next n lines have two integers w and h.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "1 <= w, h <= 10^5"
+    ],
+    "example_input": "4\n5 4\n6 4\n6 7\n2 3",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "4\n5 4\n6 4\n6 7\n2 3",
+        "output": "3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n1 1",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "H029",
+    "title": "Minimum Difficulty of a Job Schedule",
+    "difficulty": "Hard",
+    "description": "You want to schedule a list of jobs in d days. Jobs are dependent (i.e To work on the i-th job, you have to finish all the jobs j where 0 <= j < i). You have to finish at least one task every day. The difficulty of a job schedule is the sum of difficulties of each day of the d days. The difficulty of a day is the maximum difficulty of a job done on that day. Given an array of integers jobDifficulty and an integer d, return the minimum difficulty of a job schedule. If you cannot find a schedule for the jobs return -1.",
+    "input_format": "First line n and d. Second line n space-separated integers for jobDifficulty.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= d <= 10",
+      "d <= n <= 300",
+      "0 <= jobDifficulty[i] <= 1000"
+    ],
+    "example_input": "6 2\n6 5 4 3 2 1",
+    "example_output": "7",
+    "sample_testcases": [
+      {
+        "input": "6 2\n6 5 4 3 2 1",
+        "output": "7"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 4\n9 9 9",
+        "output": "-1"
+      }
+    ]
+  },
+  {
+    "id": "H030",
+    "title": "Shortest Path in a Grid with Obstacles Elimination",
+    "difficulty": "Hard",
+    "description": "You are given an m x n integer matrix grid where each cell is either 0 (empty) or 1 (obstacle). You can move up, down, left, or right from and to an empty cell in one step. Return the minimum number of steps to walk from the upper-left corner (0, 0) to the lower-right corner (m-1, n-1) given that you can eliminate at most k obstacles. If it is not possible, return -1.",
+    "input_format": "First line m, n, and k. The next m lines contain n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= m, n <= 40",
+      "1 <= k <= m * n"
+    ],
+    "example_input": "5 3 1\n0 0 0\n1 1 0\n0 0 0\n0 1 1\n0 0 0",
+    "example_output": "6",
+    "sample_testcases": [
+      {
+        "input": "5 3 1\n0 0 0\n1 1 0\n0 0 0\n0 1 1\n0 0 0",
+        "output": "6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 3 0\n0 1 1\n1 1 1\n1 0 0",
+        "output": "-1"
+      }
+    ]
+  },
+  {
+    "id": "H031",
+    "title": "Word Search II",
+    "difficulty": "Hard",
+    "description": "Given an m x n board of characters and a list of strings words, return all words on the board. Each word must be constructed from letters of sequentially adjacent cells, where adjacent cells are horizontally or vertically neighboring. The same letter cell may not be used more than once in a word.",
+    "input_format": "First line m, n. Next m lines are the board characters. Next line is w (word count). Next w lines are the words.",
+    "output_format": "Each found word on a new line.",
+    "constraints": [
+      "1 <= m, n <= 12",
+      "1 <= words.length <= 3 * 10^4"
+    ],
+    "example_input": "4 4\noaan\netae\nihkr\niflv\n4\noath\npea\neat\nrain",
+    "example_output": "oath\neat",
+    "sample_testcases": [
+      {
+        "input": "4 4\noaan\netae\nihkr\niflv\n4\noath\npea\neat\nrain",
+        "output": "oath\neat"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2 2\nab\ncd\n1\nacdb",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "H032",
+    "title": "Count of Smaller Numbers After Self",
+    "difficulty": "Hard",
+    "description": "Given an integer array nums, return an integer array counts where counts[i] is the number of smaller elements to the right of nums[i].",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single line of n space-separated integers.",
+    "constraints": [
+      "1 <= n <= 10^5",
+      "-10^4 <= nums[i] <= 10^4"
+    ],
+    "example_input": "4\n5 2 6 1",
+    "example_output": "2 1 1 0",
+    "sample_testcases": [
+      {
+        "input": "4\n5 2 6 1",
+        "output": "2 1 1 0"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1\n-1",
+        "output": "0"
+      },
+      {
+        "input": "2\n-1 -1",
+        "output": "0 0"
+      }
+    ]
+  },
+  {
+    "id": "H033",
+    "title": "Palindrome Pairs",
+    "difficulty": "Hard",
+    "description": "Given a list of unique words, return all the pairs of the distinct indices (i, j) in the given list, so that the concatenation of the two words words[i] + words[j] is a palindrome.",
+    "input_format": "First line n. The next n lines contain the words.",
+    "output_format": "Each line contains a pair of indices i, j.",
+    "constraints": [
+      "1 <= n <= 5000",
+      "0 <= words[i].length <= 300"
+    ],
+    "example_input": "4\ndcba\ndll\ns\nsssll",
+    "example_output": "0 1\n1 0\n3 2\n2 3",
+    "sample_testcases": [
+      {
+        "input": "4\ndcba\ndll\ns\nsssll",
+        "output": "0 1\n1 0\n3 2\n2 3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\na\n",
+        "output": "0 1\n1 0"
+      }
+    ]
+  },
+  {
+    "id": "H034",
+    "title": "Design a Search Autocomplete System",
+    "difficulty": "Hard",
+    "description": "Design a search autocomplete system for a search engine. Users may input a sentence (at least one word and end with a special character '#'). For each character they type except '#', you need to return the top 3 historical hot sentences that have the same prefix as the part of the sentence already typed. Hot degree is defined by the times a sentence has been searched before. If two sentences have the same hot degree, use ASCII-code order (smaller one appears first). If less than 3 sentences, return all of them.",
+    "input_format": "First line n, q. Next n lines have a sentence and its search count. Next q lines have a character to input.",
+    "output_format": "For each character input, print the top 3 suggestions. End input with '#'.",
+    "constraints": [
+      "1 <= n <= 100",
+      "1 <= q <= 200"
+    ],
+    "example_input": "2 7\ni love you 5\nisland 3\ni\n \na\n#\ni\n \nl",
+    "example_output": "i love you,island\ni love you\n\ni love you\nisland",
+    "sample_testcases": [],
+    "hidden_testcases": []
+  },
+  {
+    "id": "H035",
+    "title": "Freedom Trail",
+    "difficulty": "Hard",
+    "description": "In the game of Freedom Trail, you have a ring of characters and a key. You need to spell out the key by rotating the ring and pressing the center button. Initially, the character at the 12:00 position of the ring is aligned. You must find the minimum number of steps to spell all characters in the key. A step can be rotating one character clockwise/counter-clockwise, or pressing the center button (takes 1 step).",
+    "input_format": "First line is the ring string. Second line is the key string.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= ring.length, key.length <= 100"
+    ],
+    "example_input": "godding\ngd",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "godding\ngd",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "abcde\na",
+        "output": "1"
+      }
+    ]
+  },
+  {
+    "id": "H036",
+    "title": "Longest Consecutive Sequence",
+    "difficulty": "Hard",
+    "description": "Given an unsorted array of integers nums, return the length of the longest consecutive elements sequence. You must write an algorithm that runs in O(n) time.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "0 <= n <= 10^5"
+    ],
+    "example_input": "6\n100 4 200 1 3 2",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "6\n100 4 200 1 3 2",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "10\n0 3 7 2 5 8 4 6 0 1",
+        "output": "9"
+      }
+    ]
+  },
+  {
+    "id": "H037",
+    "title": "Alien Dictionary",
+    "difficulty": "Hard",
+    "description": "There is a new alien language that uses the English alphabet. However, the order among the letters is unknown to you. You are given a list of strings words from the alien language's dictionary, where the strings in words are sorted lexicographically by the rules of this new language. Return a string of the unique letters in the new alien language sorted in lexicographically increasing order by the new language's rules. If there is no solution, return ''. If there are multiple solutions, return any of them.",
+    "input_format": "First line n. The next n lines contain the words.",
+    "output_format": "A single string representing the alien alphabet order.",
+    "constraints": [
+      "1 <= n <= 100",
+      "1 <= words[i].length <= 100"
+    ],
+    "example_input": "5\nwrt\nwrf\ner\nett\nrftt",
+    "example_output": "wertf",
+    "sample_testcases": [
+      {
+        "input": "2\nz\nx",
+        "output": "zx"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2\nzx\nzy",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "H038",
+    "title": "Maximal Score After Applying K Operations",
+    "difficulty": "Hard",
+    "description": "You are given a 0-indexed integer array `nums` and an integer `k`. You have a score of 0. In one operation, you choose an index `i` such that `0 <= i < nums.length`, add `nums[i]` to your score, and then replace `nums[i]` with `ceil(nums[i] / 3)`. Return the maximum score you can get after applying exactly `k` operations.",
+    "input_format": "First line n, k. Second line n space-separated integers.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n, k <= 10^5"
+    ],
+    "example_input": "4 3\n10 10 10 10",
+    "example_output": "24",
+    "sample_testcases": [
+      {
+        "input": "4 3\n10 10 10 10",
+        "output": "24"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5 4\n1 10 3 3 3",
+        "output": "17"
+      }
+    ]
+  },
+  {
+    "id": "H039",
+    "title": "Range Sum Query 2D - Mutable",
+    "difficulty": "Hard",
+    "description": "Given a 2D matrix, handle two types of queries: 1. `update(row, col, val)`: Update the value at `(row, col)` to `val`. 2. `sumRegion(row1, col1, row2, col2)`: Return the sum of the elements of the matrix inside the rectangle defined by its upper left corner `(row1, col1)` and lower right corner `(row2, col2)`.",
+    "input_format": "Initial matrix, then a series of queries.",
+    "output_format": "For each `sumRegion` query, print the result.",
+    "constraints": [
+      "Matrix dimensions up to 200x200",
+      "Number of queries up to 10^4"
+    ],
+    "example_input": "5 5\n3 0 1 4 2\n5 6 3 2 1\n1 2 0 1 5\n4 1 0 1 7\n1 0 3 0 5\n3\nsum 2 1 4 3\nupdate 3 2 2\nsum 2 1 4 3",
+    "example_output": "8\n10",
+    "sample_testcases": [],
+    "hidden_testcases": []
+  },
+  {
+    "id": "H040",
+    "title": "The Skyline Problem",
+    "difficulty": "Hard",
+    "description": "A city's skyline is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance. Given the locations and heights of all the buildings, return the skyline formed by these buildings collectively. The geometric information of each building is given in the array buildings where buildings[i] = [lefti, righti, heighti].",
+    "input_format": "First line n. Next n lines have left, right, height.",
+    "output_format": "Key points [x, y] of the skyline, one per line.",
+    "constraints": [
+      "1 <= n <= 10^4"
+    ],
+    "example_input": "5\n2 9 10\n3 7 15\n5 12 12\n15 20 10\n19 24 8",
+    "example_output": "2 10\n3 15\n7 12\n12 0\n15 10\n20 8\n24 0",
+    "sample_testcases": [],
+    "hidden_testcases": []
+  },
+  {
+    "id": "H041",
+    "title": "Integer to English Words",
+    "difficulty": "Hard",
+    "description": "Convert a non-negative integer num to its English words representation.",
+    "input_format": "A single integer num.",
+    "output_format": "A single string.",
+    "constraints": [
+      "0 <= num <= 2^31 - 1"
+    ],
+    "example_input": "1234567",
+    "example_output": "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven",
+    "sample_testcases": [
+      {
+        "input": "123",
+        "output": "One Hundred Twenty Three"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "0",
+        "output": "Zero"
+      }
+    ]
+  },
+  {
+    "id": "H042",
+    "title": "Basic Calculator",
+    "difficulty": "Hard",
+    "description": "Given a string s representing a valid expression, implement a basic calculator to evaluate it and return the result of the evaluation. Note: You are not allowed to use any built-in function which evaluates strings as mathematical expressions, like `eval()`.",
+    "input_format": "A single line string s.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= s.length <= 3 * 10^5"
+    ],
+    "example_input": "(1+(4+5+2)-3)+(6+8)",
+    "example_output": "23",
+    "sample_testcases": [
+      {
+        "input": "1 + 1",
+        "output": "2"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": " 2-1 + 2 ",
+        "output": "3"
+      }
+    ]
+  },
+  {
+    "id": "H043",
+    "title": "Frog Jump",
+    "difficulty": "Hard",
+    "description": "A frog is crossing a river. The river is divided into some number of units, and at each unit, there may or may not exist a stone. The frog can jump on a stone, but it must not jump into the water. Given a list of stones' positions (in units) in sorted ascending order, determine if the frog can cross the river by landing on the last stone. Initially, the frog is on the first stone and assumes the first jump must be 1 unit. If the frog's last jump was k units, its next jump must be either k - 1, k, or k + 1 units.",
+    "input_format": "First line n. Second line n space-separated integers.",
+    "output_format": "A single word: 'true' or 'false'.",
+    "constraints": [
+      "2 <= n <= 2000"
+    ],
+    "example_input": "8\n0 1 3 5 6 8 12 17",
+    "example_output": "true",
+    "sample_testcases": [
+      {
+        "input": "8\n0 1 3 5 6 8 12 17",
+        "output": "true"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "5\n0 1 2 3 4 8 9 11",
+        "output": "false"
+      }
+    ]
+  },
+  {
+    "id": "H044",
+    "title": "Remove Invalid Parentheses",
+    "difficulty": "Hard",
+    "description": "Given a string s that contains parentheses and letters, remove the minimum number of invalid parentheses to make the input string valid. Return all the possible results. You may return the answer in any order.",
+    "input_format": "A single line string s.",
+    "output_format": "Each valid string on a new line.",
+    "constraints": [
+      "1 <= s.length <= 25"
+    ],
+    "example_input": "()())()",
+    "example_output": "(())()\n()()()",
+    "sample_testcases": [
+      {
+        "input": "(a)())()",
+        "output": "(a())()\n(a)()()"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": ")(",
+        "output": ""
+      }
+    ]
+  },
+  {
+    "id": "H045",
+    "title": "Minimum Number of Taps to Open to Water a Garden",
+    "difficulty": "Hard",
+    "description": "There is a one-dimensional garden on the x-axis. The garden starts at the point 0 and ends at the point n. There are n + 1 taps located at points [0, 1, ..., n]. Given an integer n and an integer array ranges of length n + 1 where ranges[i] is the range the i-th tap can water. Return the minimum number of taps that should be open to water the whole garden. If the garden cannot be watered, return -1.",
+    "input_format": "First line n. Second line n+1 space-separated integers for ranges.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= n <= 10^4"
+    ],
+    "example_input": "5\n3 4 1 1 0 0",
+    "example_output": "1",
+    "sample_testcases": [
+      {
+        "input": "5\n3 4 1 1 0 0",
+        "output": "1"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3\n0 0 0 0",
+        "output": "-1"
+      }
+    ]
+  },
+  {
+    "id": "H046",
+    "title": "Critical Connections in a Network",
+    "difficulty": "Hard",
+    "description": "There are n servers numbered from 0 to n - 1 connected by undirected server-to-server connections forming a network where connections[i] = [ai, bi] represents a connection between servers ai and bi. Any server can reach any other server. A critical connection is a connection that, if removed, will make some server unable to reach some other server. Return all critical connections in the network in any order.",
+    "input_format": "First line n, c (connections). Next c lines have two integers u, v.",
+    "output_format": "Each line has a pair u, v representing a critical connection.",
+    "constraints": [
+      "2 <= n <= 10^5"
+    ],
+    "example_input": "4 4\n0 1\n1 2\n2 0\n1 3",
+    "example_output": "1 3",
+    "sample_testcases": [
+      {
+        "input": "4 4\n0 1\n1 2\n2 0\n1 3",
+        "output": "1 3"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "2 1\n0 1",
+        "output": "0 1"
+      }
+    ]
+  },
+  {
+    "id": "H047",
+    "title": "Number of Ways to Form a Target String Given a Dictionary",
+    "difficulty": "Hard",
+    "description": "You are given a list of strings of the same length, words, and a string, target. Your task is to form target using characters from words. To form the i-th character of target, you can choose the k-th character of any string in words if target[i] == words[j][k]. You can use each character in words at most once. Return the number of ways to form target from words, modulo 10^9 + 7.",
+    "input_format": "First line is target. Second line n. Next n lines are the words.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= words.length <= 1000",
+      "1 <= words[i].length <= 1000"
+    ],
+    "example_input": "abba\n4\nacca\nbbba\nbaab\nabaa",
+    "example_output": "6",
+    "sample_testcases": [
+      {
+        "input": "abba\n4\nacca\nbbba\nbaab\nabaa",
+        "output": "6"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "aba\n2\ncaba\nbbba",
+        "output": "4"
+      }
+    ]
+  },
+  {
+    "id": "H048",
+    "title": "Strong Password Checker",
+    "difficulty": "Hard",
+    "description": "A password is strong if it has at least 6 characters and at most 20 characters, contains at least one lowercase letter, one uppercase letter, and one digit, and does not contain three repeating characters in a row. Given a string password, return the minimum number of steps required to make the password strong.",
+    "input_format": "A single line string password.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= password.length <= 50"
+    ],
+    "example_input": "aA1",
+    "example_output": "3",
+    "sample_testcases": [
+      {
+        "input": "a",
+        "output": "5"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "1337C0d3",
+        "output": "0"
+      },
+      {
+        "input": "bbaaaaaaaaaaaaaaacccccc",
+        "output": "8"
+      }
+    ]
+  },
+  {
+    "id": "H049",
+    "title": "Maximum Frequency Stack",
+    "difficulty": "Hard",
+    "description": "Design a stack-like data structure to push elements to the stack and pop the most frequent element from the stack. Implement the FreqStack class: `push(int val)` pushes an integer val onto the top of the stack. `pop()` removes and returns the most frequent element in the stack. If there is a tie for the most frequent element, the element closest to the stack's top is removed and returned.",
+    "input_format": "First line q (queries). Next q lines are 'push val' or 'pop'.",
+    "output_format": "For each 'pop', print the result.",
+    "constraints": [
+      "1 <= q <= 5 * 10^4"
+    ],
+    "example_input": "10\npush 5\npush 7\npush 5\npush 7\npush 4\npush 5\npop\npop\npop\npop",
+    "example_output": "5\n7\n5\n4",
+    "sample_testcases": [],
+    "hidden_testcases": []
+  },
+  {
+    "id": "H050",
+    "title": "Longest Increasing Path in a Matrix",
+    "difficulty": "Hard",
+    "description": "Given an m x n integers matrix, return the length of the longest increasing path in matrix. From each cell, you can either move in four directions: left, right, up, or down. You may not move diagonally or move outside the boundary.",
+    "input_format": "First line m, n. Next m lines are the matrix.",
+    "output_format": "A single integer.",
+    "constraints": [
+      "1 <= m, n <= 200"
+    ],
+    "example_input": "3 3\n9 9 4\n6 6 8\n2 1 1",
+    "example_output": "4",
+    "sample_testcases": [
+      {
+        "input": "3 3\n9 9 4\n6 6 8\n2 1 1",
+        "output": "4"
+      }
+    ],
+    "hidden_testcases": [
+      {
+        "input": "3 3\n3 4 5\n3 2 6\n2 2 1",
+        "output": "4"
+      }
+    ]
+  }
+]

@@ -1,86 +1,125 @@
-const { ChatOpenAI } = require('@langchain/openai');
-const { PromptTemplate } = require('@langchain/core/prompts');
-const { StringOutputParser } = require('@langchain/core/output_parsers');
 require('dotenv').config();
+const mongoose = require('mongoose');
+const Challenge = require('./models/Challenge');
+const LocalChallengeStore = require('./models/LocalChallengeStore');
 
-// Initialize the OpenAI model
-const chatModel = new ChatOpenAI({
-  openAIApiKey: process.env.OPENAI_API_KEY,
-  temperature: 0.7,
-  modelName: 'gpt-3.5-turbo',
-  // Add additional configuration for error handling
-  maxRetries: 3,
-  timeout: 30000, // 30 seconds timeout
+// Log MongoDB connection status
+console.log('Using MongoDB for challenge retrieval');
+
+// Set MongoDB connection options
+mongoose.set('bufferTimeoutMS', 30000); // Increase buffer timeout to 30 seconds
+
+// Ensure MongoDB connection
+let isConnected = false;
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB connection established in challengeGenerator');
+  isConnected = true;
 });
 
-// Log OpenAI initialization status
-console.log('OpenAI model initialized with API key format:', 
-  process.env.OPENAI_API_KEY ? 
-  `${process.env.OPENAI_API_KEY.substring(0, 7)}...` : 
-  'No API key found');
-
-// Note: If you're seeing fallback challenges, it's likely because:
-// 1. The API key format is incorrect (should be sk-... not sk-proj-...)
-// 2. The API key has expired or has no credits
-// 3. There are network issues reaching the OpenAI API
-
-// Define the prompt template for generating coding challenges
-const challengePromptTemplate = PromptTemplate.fromTemplate(`
-You are a coding challenge generator for a competitive programming platform.
-Generate a unique coding challenge with the following structure:
-
-1. Title: A concise title for the challenge
-2. Description: A clear explanation of the problem
-3. Constraints: Any constraints on input/output or performance requirements
-4. Visible Test Cases: 2-3 test cases that will be shown to the user (format: input and expected output pairs)
-5. Hidden Test Cases: 2-3 additional test cases that will be used for scoring but not shown to the user
-6. Difficulty: Easy, Medium, or Hard
-
-The challenge should be appropriate for a {difficulty} difficulty level and solvable in {language}.
-Make sure the challenge is clear, concise, and has a well-defined solution.
-For test cases, provide input and expected output pairs that thoroughly test the solution.
-`);
-
-// Function to generate a coding challenge
-async function generateChallenge(language = 'javascript', difficulty = 'medium') {
-  try {
-    // Create the chain
-    const chain = challengePromptTemplate
-      .pipe(chatModel)
-      .pipe(new StringOutputParser());
-
-    // Generate the challenge
-    const challenge = await chain.invoke({
-      language,
-      difficulty,
+// Connect to MongoDB if not already connected
+if (mongoose.connection.readyState !== 1) {
+  mongoose.connect(process.env.MONGO_URI)
+    .catch(err => {
+      console.error('MongoDB connection error in challengeGenerator:', err);
     });
+}
 
-    // Parse the challenge into a structured format
-    const parsedChallenge = parseChallenge(challenge);
-    return parsedChallenge;
-  } catch (error) {
-    // Provide more detailed error information
-    let errorType = 'Unknown error';
-    let errorDetails = '';
-    
-    if (error.name === 'AuthenticationError' || error.message.includes('authentication')) {
-      errorType = 'API Key Authentication Error';
-      errorDetails = 'The OpenAI API key is invalid, expired, or in the wrong format. Check your .env file.';
-    } else if (error.name === 'RateLimitError' || error.message.includes('rate limit')) {
-      errorType = 'Rate Limit Error';
-      errorDetails = 'The OpenAI API rate limit has been exceeded. Try again later or upgrade your plan.';
-    } else if (error.name === 'TimeoutError' || error.message.includes('timeout')) {
-      errorType = 'Timeout Error';
-      errorDetails = 'The request to OpenAI API timed out. Check your network connection.';
-    } else if (error.message.includes('network') || error.message.includes('ENOTFOUND')) {
-      errorType = 'Network Error';
-      errorDetails = 'Could not connect to the OpenAI API. Check your internet connection.';
+// Function to retrieve a coding challenge from MongoDB or local storage
+async function generateChallenge(difficulty = 'medium') {
+  try {
+    // Map difficulty to ID prefix
+    let idPrefix;
+    switch(difficulty.toLowerCase()) {
+      case 'easy':
+        idPrefix = 'E';
+        break;
+      case 'medium':
+        idPrefix = 'M';
+        break;
+      case 'hard':
+        idPrefix = 'H';
+        break;
+      default:
+        idPrefix = 'M'; // Default to medium if invalid difficulty
     }
     
-    console.error(`Error generating challenge: ${errorType}`, error);
-    console.error(`Error details: ${errorDetails}`);
+    // Normalize difficulty to match the schema (first letter uppercase, rest lowercase)
+    const normalizedDifficulty = difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase();
+
+    try {
+      // Try MongoDB first with normalized difficulty
+      const query = {
+        difficulty: normalizedDifficulty
+      };
+      
+      // We'll only filter by difficulty since the schema doesn't have an id field
+      // The ID prefix logic is used for local storage fallback
+      
+      const count = await Challenge.countDocuments(query);
+      
+      if (count === 0) {
+        console.log(`No challenges found in MongoDB for difficulty ${normalizedDifficulty}. Falling back to local storage.`);
+        // Skip MongoDB and go directly to local storage since there are no challenges in MongoDB
+        throw new Error('No challenges found in MongoDB');
+      }
+      
+      // Get a random challenge matching the criteria
+      const randomIndex = Math.floor(Math.random() * count);
+      const challenge = await Challenge.findOne(query).skip(randomIndex);
+      
+      if (challenge) {
+        console.log(`Retrieved challenge from MongoDB: ${challenge.title} (ID: ${challenge.id})`);
+        return challenge;
+      }
+      
+      throw new Error('No challenges found in MongoDB');
+    } catch (mongoError) {
+      console.log('MongoDB retrieval failed, falling back to local storage:', mongoError.message);
+      
+      // Fall back to local storage with ID prefix filter and case-insensitive difficulty matching
+      const regex = new RegExp(`^${idPrefix}`);
+      let challenges = LocalChallengeStore.challenges.filter(challenge => {
+        return challenge.id.match(regex) && 
+               (challenge.difficulty.toLowerCase() === difficulty.toLowerCase());
+      });
+      
+      // If no match with specific difficulty, try any challenge with matching ID prefix
+      if (challenges.length === 0) {
+        console.log(`No challenges found in local storage for difficulty ${normalizedDifficulty}. Trying any difficulty with ID prefix ${idPrefix}.`);
+        challenges = LocalChallengeStore.challenges.filter(challenge => {
+          return challenge.id.match(regex);
+        });
+        
+        // If still no matches, fall back to any challenge
+        if (challenges.length === 0) {
+          console.log(`No challenges found in local storage with ID prefix ${idPrefix}. Falling back to any challenge.`);
+          challenges = LocalChallengeStore.challenges;
+        }
+      }
+      
+      if (challenges.length > 0) {
+        // Get a random challenge
+        const randomIndex = Math.floor(Math.random() * challenges.length);
+        const challenge = challenges[randomIndex];
+        
+        // Ensure challenge has exampleInput and exampleOutput fields
+        if (!challenge.exampleInput && challenge.sample_testcases && challenge.sample_testcases.length > 0) {
+          challenge.exampleInput = challenge.sample_testcases[0].input;
+        }
+        
+        if (!challenge.exampleOutput && challenge.sample_testcases && challenge.sample_testcases.length > 0) {
+          challenge.exampleOutput = challenge.sample_testcases[0].output;
+        }
+        console.log(`Retrieved challenge from local storage: ${challenge.title} (ID: ${challenge.id})`);
+        return challenge;
+      }
+      
+      throw new Error(`No challenges available with prefix ${idPrefix} in local storage`);
+    }
+  } catch (error) {
+    console.error(`Error retrieving challenge from MongoDB: ${error.message}`);
     
-    // Array of  fallback challenges to choose from
+    // Fallback challenges in case of database error
     const fallbackChallenges = [
       {
         title: 'Reverse a String ',
@@ -176,118 +215,5 @@ async function generateChallenge(language = 'javascript', difficulty = 'medium')
   }
 }
 
-// Helper function to parse the challenge text into a structured format
-function parseChallenge(challengeText) {
-  const lines = challengeText.split('\n');
-  const challenge = {
-    title: '',
-    description: '',
-    constraints: '',
-    visibleTestCases: [],
-    hiddenTestCases: [],
-    difficulty: ''
-  };
-
-  let currentSection = '';
-  let currentTestCase = {};
-  
-  for (const line of lines) {
-    if (line.startsWith('Title:')) {
-      currentSection = 'title';
-      challenge.title = line.replace('Title:', '').trim();
-    } else if (line.startsWith('Description:')) {
-      currentSection = 'description';
-      challenge.description = line.replace('Description:', '').trim();
-    } else if (line.startsWith('Constraints:')) {
-      currentSection = 'constraints';
-      challenge.constraints = line.replace('Constraints:', '').trim();
-    } else if (line.startsWith('Visible Test Cases:')) {
-      currentSection = 'visibleTestCases';
-      // Initialize but don't add anything yet
-    } else if (line.startsWith('Hidden Test Cases:')) {
-      currentSection = 'hiddenTestCases';
-      // Initialize but don't add anything yet
-    } else if (line.startsWith('Difficulty:')) {
-      currentSection = 'difficulty';
-      challenge.difficulty = line.replace('Difficulty:', '').trim();
-    } else if (line.trim() !== '') {
-      // Process based on current section
-      if (currentSection === 'title' || currentSection === 'description' || currentSection === 'constraints' || currentSection === 'difficulty') {
-        // Append to the current section if it's not an empty line
-        if (challenge[currentSection]) {
-          challenge[currentSection] += '\n' + line.trim();
-        }
-      } else if (currentSection === 'visibleTestCases' || currentSection === 'hiddenTestCases') {
-        // Parse test cases
-        if (line.includes('Input:')) {
-          // Start a new test case
-          currentTestCase = { input: line.replace('Input:', '').trim() };
-        } else if (line.includes('Output:') && currentTestCase.input) {
-          // Complete the test case and add it to the appropriate array
-          currentTestCase.expected = line.replace('Output:', '').trim();
-          challenge[currentSection].push({
-            input: currentTestCase.input,
-            expected: currentTestCase.expected
-          });
-          currentTestCase = {};
-        }
-      }
-    }
-  }
-
-  // If no test cases were parsed, create default ones based on example input/output
-  if (challenge.visibleTestCases.length === 0) {
-    // Extract example input/output from description if available
-    const exampleMatch = challenge.description.match(/Example(\s+Input)?:\s*([\s\S]*?)\s*Example(\s+Output)?:\s*([\s\S]*?)(?=(\n\n|$))/i);
-    
-    if (exampleMatch && exampleMatch[2] && exampleMatch[4]) {
-      const exampleInput = exampleMatch[2].trim();
-      const exampleOutput = exampleMatch[4].trim();
-      
-      challenge.visibleTestCases.push({
-        input: exampleInput,
-        expected: exampleOutput
-      });
-    } else {
-      // Default test case if no examples found
-      challenge.visibleTestCases.push({
-        input: "sample input",
-        expected: "sample output"
-      });
-    }
-  }
-
-  // Generate hidden test cases if none were provided
-  if (challenge.hiddenTestCases.length === 0) {
-    // Use visible test cases as a base for hidden ones with slight modifications
-    if (challenge.visibleTestCases.length > 0) {
-      const baseCase = challenge.visibleTestCases[0];
-      
-      // Create two variations
-      challenge.hiddenTestCases.push({
-        input: baseCase.input + " (modified for hidden case 1)",
-        expected: baseCase.expected + " (modified for hidden case 1)"
-      });
-      
-      challenge.hiddenTestCases.push({
-        input: baseCase.input + " (modified for hidden case 2)",
-        expected: baseCase.expected + " (modified for hidden case 2)"
-      });
-    } else {
-      // Default hidden test cases
-      challenge.hiddenTestCases.push({
-        input: "hidden input 1",
-        expected: "hidden output 1"
-      });
-      
-      challenge.hiddenTestCases.push({
-        input: "hidden input 2",
-        expected: "hidden output 2"
-      });
-    }
-  }
-
-  return challenge;
-}
-
+// Make sure the function is properly exported
 module.exports = { generateChallenge };

@@ -323,278 +323,267 @@ function Room() {
   };
 
   return (
-    <div style={{ padding: "20px", height: "100vh", boxSizing: "border-box", position: "relative" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
-        <div>
-          <h2>Room: {roomId}</h2>
-          <p>Logged in as: {username}</p>
-        </div>
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <label htmlFor="language-select" style={{ marginRight: "10px", fontWeight: "bold" }}>
-            Language:
-          </label>
-          {isLoadingLanguages ? (
-            <div style={{ 
-              padding: "8px", 
-              borderRadius: "4px", 
-              border: "1px solid #ccc", 
-              backgroundColor: "#f8f8f8", 
-              fontSize: "14px",
-              minWidth: "120px",
-              textAlign: "center"
-            }}>
-              Loading...
-            </div>
-          ) : (
-            <select 
-              id="language-select"
-              value={language}
-              onChange={(e) => {
-                const newLanguage = e.target.value;
-                setLanguage(newLanguage);
-                // Update code with template for the new language if current editor is empty or has default template
-                if (socket.id && playerEditors[socket.id]) {
-                  const currentCode = playerEditors[socket.id];
-                  // Check if current code is empty or just a default template
-                  const isDefaultOrEmpty = currentCode.trim() === "" || 
-                    availableLanguages.some(lang => 
-                      currentCode === getStarterTemplate(lang.id));
-                  
-                  if (isDefaultOrEmpty) {
-                    const newTemplate = getStarterTemplate(newLanguage);
-                    handleCodeChange(socket.id, newTemplate);
-                  }
-                }
-              }}
-              style={{
-                padding: "8px",
-                borderRadius: "4px",
-                border: "1px solid #ccc",
-                backgroundColor: "#f8f8f8",
-                cursor: "pointer",
-                fontSize: "14px",
-                minWidth: "120px"
-              }}
-              disabled={availableLanguages.length === 0}
-            >
-              {availableLanguages.length === 0 ? (
-                <option>No languages available</option>
-              ) : (
-                availableLanguages.map((lang) => (
-                  <option key={lang.id} value={lang.id}>
-                    {lang.name}
-                  </option>
-                ))
-              )}
-            </select>
-          )}
-        </div>
-      </div>
-      
-      {/* Dedicated Run and Submit buttons in top right */}
-      <div style={{ 
-        position: "absolute", 
-        top: "20px", 
-        right: "20px", 
-        display: "flex", 
-        gap: "10px" 
-      }}>
-        <button 
-          onClick={runOwnCode} 
-          disabled={!matchStarted || isEvaluating} 
-          style={{ 
-            padding: "8px 16px", 
-            backgroundColor: "#4CAF50", 
-            color: "white", 
-            border: "none", 
-            borderRadius: "4px", 
-            cursor: (matchStarted && !isEvaluating) ? "pointer" : "not-allowed", 
-            fontWeight: "bold",
-            opacity: isEvaluating ? 0.7 : 1,
-            minWidth: "100px"
-          }}
-        >
-          {isEvaluating ? "Running..." : "Run Code"}
-        </button>
-        <button 
-          onClick={submitCode} 
-          disabled={!matchStarted || isEvaluating} 
-          style={{ 
-            padding: "8px 16px", 
-            backgroundColor: "#2196F3", 
-            color: "white", 
-            border: "none", 
-            borderRadius: "4px", 
-            cursor: (matchStarted && !isEvaluating) ? "pointer" : "not-allowed", 
-            fontWeight: "bold",
-            opacity: isEvaluating ? 0.7 : 1,
-            minWidth: "100px"
-          }}
-        >
-          {isEvaluating ? "Submitting..." : "Submit"}
-        </button>
-      </div>
-
-      {/* Match controls - only visible to room creator */}
-      <div style={{ marginBottom: 12 }}>
-        {isRoomCreator ? (
-          !matchStarted ? (
-            <button 
-              onClick={startMatch} 
-              disabled={players.length < 2}
-              title={players.length < 2 ? "Need at least 2 players to start" : ""}
-              style={{
-                opacity: players.length < 2 ? 0.6 : 1,
-                cursor: players.length < 2 ? "not-allowed" : "pointer"
-              }}
-            >
-              Start Match {players.length < 2 ? "(Need more players)" : ""}
-            </button>
-          ) : (
-            <button onClick={stopMatch}>Stop Match</button>
-          )
-        ) : (
-          matchStarted ? (
-            <div>Match in progress...</div>
-          ) : (
-            <div>Waiting for room creator to start the match...</div>
-          )
-        )}
-      </div>
-
-      {/* Challenge Display */}
-      {currentChallenge && (
-        <div style={{ 
-          marginBottom: 16, 
-          padding: "15px", 
-          backgroundColor: "#f8f9fa", 
-          borderRadius: "8px", 
-          border: "1px solid #dee2e6" 
-        }}>
-          <h3 style={{ marginTop: 0 }}>{currentChallenge.title}</h3>
-          <div style={{ whiteSpace: "pre-wrap" }}>
-            <p><strong>Description:</strong> {currentChallenge.description}</p>
-            {currentChallenge.constraints && (
-              <p><strong>Constraints:</strong> {currentChallenge.constraints}</p>
-            )}
-            <div style={{ display: "flex", gap: "20px" }}>
-              <div style={{ flex: 1 }}>
-                <p><strong>Example Input:</strong></p>
-                <pre style={{ 
-                  backgroundColor: "#e9ecef", 
-                  padding: "10px", 
-                  borderRadius: "4px", 
-                  overflowX: "auto" 
-                }}>{currentChallenge.exampleInput}</pre>
-              </div>
-              <div style={{ flex: 1 }}>
-                <p><strong>Example Output:</strong></p>
-                <pre style={{ 
-                  backgroundColor: "#e9ecef", 
-                  padding: "10px", 
-                  borderRadius: "4px", 
-                  overflowX: "auto" 
-                }}>{currentChallenge.exampleOutput}</pre>
+    <div className="main-content">
+      <div className="container">
+        <div className="card fade-in" style={{ marginBottom: "var(--space-xl)" }}>
+          <div className="card-header">
+            <div className="d-flex justify-content-between align-items-center">
+              <h2 style={{ margin: 0, fontSize: "1.25rem", display: "flex", alignItems: "center", gap: "8px" }}>
+                <i className="fas fa-gamepad" style={{ color: "var(--primary)" }}></i> Room: {roomId}
+              </h2>
+              <div className="d-flex gap-md align-items-center">
+                <div className="form-group mb-0">
+                  <select 
+                    className="form-control"
+                    value={language} 
+                    onChange={(e) => {
+                      const newLanguage = e.target.value;
+                      setLanguage(newLanguage);
+                      // Update code with template for the new language if current editor is empty or has default template
+                      if (socket.id && playerEditors[socket.id]) {
+                        const currentCode = playerEditors[socket.id];
+                        // Check if current code is empty or just a default template
+                        const isDefaultOrEmpty = currentCode.trim() === "" || 
+                          availableLanguages.some(lang => 
+                            currentCode === getStarterTemplate(lang.id));
+                        
+                        if (isDefaultOrEmpty) {
+                          const newTemplate = getStarterTemplate(newLanguage);
+                          handleCodeChange(socket.id, newTemplate);
+                        }
+                      }
+                    }}
+                    disabled={availableLanguages.length === 0}
+                    style={{ borderRadius: "var(--radius-md)", padding: "8px 12px" }}
+                  >
+                    {availableLanguages.length === 0 ? (
+                      <option>No languages available</option>
+                    ) : (
+                      availableLanguages.map((lang) => (
+                        <option key={lang.id} value={lang.id}>
+                          {lang.name}
+                        </option>
+                      ))
+                    )}
+                  </select>
+                </div>
+                {isRoomCreator && (
+                  <>
+                    {!matchStarted ? (
+                      <button 
+                        className="btn btn-primary" 
+                        onClick={startMatch}
+                        disabled={players.length < 2}
+                        title={players.length < 2 ? "Need at least 2 players to start" : ""}
+                        style={{ 
+                          display: "flex", 
+                          alignItems: "center", 
+                          gap: "8px",
+                          padding: "8px 16px",
+                          transition: "all 0.3s ease",
+                          animation: players.length >= 2 ? "pulse 2s infinite" : "none"
+                        }}
+                      >
+                        <i className="fas fa-play"></i> Start Match {players.length < 2 ? "(Need more players)" : ""}
+                      </button>
+                    ) : (
+                      <button 
+                        className="btn btn-warning" 
+                        onClick={stopMatch}
+                        style={{ 
+                          display: "flex", 
+                          alignItems: "center", 
+                          gap: "8px",
+                          padding: "8px 16px"
+                        }}
+                      >
+                        <i className="fas fa-stop"></i> Stop Match
+                      </button>
+                    )}
+                  </>
+                )}
               </div>
             </div>
-            <p><strong>Difficulty:</strong> {currentChallenge.difficulty}</p>
           </div>
         </div>
-      )}
-      
-      {/* Match Results Panel - shown when match ends */}
-      {!matchStarted && matchResults && <MatchResultsPanel matchResults={matchResults} />}
-      
-      {/* Test Results Display */}
-      {testResults && testResults.length > 0 && (
-        <TestResultsPanel 
-          testResults={testResults} 
-          isSubmission={isSubmissionResults} 
-        />
-      )}
 
-      {/* Scoreboard */}
-      <div style={{ marginBottom: 16 }}>
-        <h3>Scores</h3>
-        <ul>
-          {players.map((p) => (
-            <li key={p.socketId}>
-              {p.username}
-              {p.socketId === socket.id ? " (You)" : ""}: {scores[p.socketId] ?? 0}
-            </li>
-          ))}
-        </ul>
-        <small>
-          Run: +1 point for passing visible test cases. Submit: +10 points per hidden test case passed.
-        </small>
-      </div>
+        {/* Run and Submit buttons */}
+        <div className="action-buttons" style={{ 
+          position: "fixed", 
+          top: "20px", 
+          right: "20px", 
+          zIndex: 100,
+          display: "flex", 
+          gap: "10px" 
+        }}>
+          <button 
+            className="btn btn-success"
+            onClick={runOwnCode} 
+            disabled={!matchStarted || isEvaluating} 
+          >
+            <i className="fas fa-play-circle"></i> {isEvaluating ? "Running..." : "Run Code"}
+          </button>
+          <button 
+            className="btn btn-primary"
+            onClick={submitCode} 
+            disabled={!matchStarted || isEvaluating} 
+          >
+            <i className="fas fa-check-circle"></i> {isEvaluating ? "Submitting..." : "Submit"}
+          </button>
+        </div>
 
-      {/* 2x2 editors grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gridTemplateRows: "1fr 1fr",
-          gap: "10px",
-          height: "85vh",
-        }}
-      >
-        {Array.from({ length: 4 }).map((_, idx) => {
-          const player = players[idx];
-
-          return (
-            <div
-              key={player?.socketId || idx}
-              style={{
-                border: "1px solid #ccc",
-                display: "flex",
-                flexDirection: "column",
-                minHeight: 0,
-              }}
-            >
-              <div style={{ background: "#eee", padding: "5px", flexShrink: 0 }}>
-                {player ? (
-                  <>
-                    {player.username}
-                    {player.socketId === socket.id && " (You)"}
-                    <span style={{ float: "right" }}>
-                      {scores[player?.socketId] ?? 0} pts
-                    </span>
-                  </>
-                ) : (
-                  `Waiting for player ${idx + 1}...`
+        {/* Challenge Display */}
+        {currentChallenge && (
+          <div className="card fade-in" style={{ marginBottom: "var(--space-xl)", boxShadow: "var(--shadow-md)" }}>
+            <div className="card-header" style={{ borderBottom: "2px solid var(--primary-light)" }}>
+              <h3 style={{ margin: 0, fontSize: "1.25rem", display: "flex", alignItems: "center", gap: "8px" }}>
+                <i className="fas fa-code-branch" style={{ color: "var(--primary)" }}></i> Challenge: {currentChallenge.title}
+              </h3>
+            </div>
+            <div className="card-body" style={{ padding: "var(--space-lg)" }}>
+              <div style={{ whiteSpace: "pre-wrap" }}>
+                <p style={{ fontSize: "1.1rem", lineHeight: "1.6", backgroundColor: "rgba(255, 255, 255, 0.05)", padding: "var(--space-md)", borderRadius: "var(--radius-md)" }}>
+                  <strong style={{ color: "var(--primary-light)" }}>Description:</strong> {currentChallenge.description}
+                </p>
+                {currentChallenge.constraints && (
+                  <p style={{ fontSize: "1rem", backgroundColor: "rgba(255, 255, 255, 0.03)", padding: "var(--space-md)", borderRadius: "var(--radius-md)", marginTop: "var(--space-md)" }}>
+                    <strong style={{ color: "var(--warning)" }}>Constraints:</strong> {currentChallenge.constraints}
+                  </p>
                 )}
-              </div>
-
-              <div style={{ flex: 1, minHeight: 0, overflow: "hidden" }}>
-                {player ? (
-                  <>
-                    <CodeEditor
-                      code={playerEditors[player.socketId] || ""}
-                      onChange={(value) => handleCodeChange(player.socketId, value)}
-                      readOnly={player.socketId !== socket.id}
-                      language={player.socketId === socket.id ? language : language}
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                    {/* Removed individual Run button since we now have dedicated buttons in the top right */}
-                  </>
-                ) : (
-                  <div
-                    style={{
-                      height: "100%",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      background: "#f9f9f9",
-                    }}
-                  >
-                    Waiting for player...
+                <div className="d-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "var(--space-lg)" }}>
+                  <div style={{ backgroundColor: "var(--surface-light)", padding: "var(--space-md)", borderRadius: "var(--radius-md)" }}>
+                    <p><strong style={{ color: "var(--primary-light)" }}>Example Input:</strong></p>
+                    <pre className="code-block" style={{ padding: "var(--space-md)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-light)" }}>{currentChallenge.exampleInput}</pre>
                   </div>
-                )}
+                  <div style={{ backgroundColor: "var(--surface-light)", padding: "var(--space-md)", borderRadius: "var(--radius-md)" }}>
+                    <p><strong style={{ color: "var(--success)" }}>Example Output:</strong></p>
+                    <pre className="code-block" style={{ padding: "var(--space-md)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border-light)" }}>{currentChallenge.exampleOutput}</pre>
+                  </div>
+                </div>
+                <p style={{ marginTop: "var(--space-lg)", display: "inline-block", padding: "var(--space-xs) var(--space-md)", backgroundColor: currentChallenge.difficulty === "Easy" ? "var(--success-light)" : currentChallenge.difficulty === "Hard" ? "var(--danger-light)" : "var(--warning-light)", borderRadius: "var(--radius-full)" }}>
+                  <strong>Difficulty:</strong> {currentChallenge.difficulty}
+                </p>
               </div>
             </div>
-          );
-        })}
+          </div>
+        )}
+        
+        {/* Match Results Panel - shown when match ends */}
+        {!matchStarted && matchResults && <MatchResultsPanel matchResults={matchResults} />}
+        
+        {/* Test Results Display */}
+        {testResults && testResults.length > 0 && (
+          <TestResultsPanel 
+            testResults={testResults} 
+            isSubmission={isSubmissionResults} 
+          />
+        )}
+
+        {/* Scoreboard */}
+        <div className="card fade-in" style={{ marginBottom: "var(--space-lg)", boxShadow: "var(--shadow-md)" }}>
+          <div className="card-header" style={{ borderBottom: "2px solid var(--primary-light)" }}>
+            <h3 style={{ margin: 0, fontSize: "1.25rem", display: "flex", alignItems: "center", gap: "8px" }}>
+              <i className="fas fa-trophy" style={{ color: "var(--warning)" }}></i> Scores
+            </h3>
+          </div>
+          <div className="card-body">
+            <ul className="score-list" style={{ listStyle: "none", padding: 0, margin: 0 }}>
+              {players.map((p) => (
+                <li 
+                  key={p.socketId} 
+                  className={p.socketId === socket.id ? "current-user" : ""}
+                  style={{ 
+                    padding: "var(--space-md)", 
+                    margin: "var(--space-xs) 0", 
+                    borderRadius: "var(--radius-md)",
+                    backgroundColor: p.socketId === socket.id ? "rgba(67, 97, 238, 0.1)" : "var(--surface-light)",
+                    border: p.socketId === socket.id ? "1px solid var(--primary)" : "1px solid var(--border)",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    transition: "all 0.3s ease"
+                  }}
+                >
+                  <span style={{ fontWeight: p.socketId === socket.id ? 600 : 400 }}>
+                    {p.username}
+                    {p.socketId === socket.id ? " (You)" : ""}
+                  </span>
+                  <span 
+                    className="score-value"
+                    style={{ 
+                      fontWeight: "bold", 
+                      backgroundColor: "var(--surface)", 
+                      padding: "var(--space-xs) var(--space-sm)",
+                      borderRadius: "var(--radius-full)",
+                      minWidth: "50px",
+                      textAlign: "center",
+                      color: scores[p.socketId] > 0 ? "var(--success)" : "var(--text-secondary)"
+                    }}
+                  >
+                    {scores[p.socketId] ?? 0}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <div className="info-text" style={{ 
+              marginTop: "var(--space-lg)", 
+              padding: "var(--space-md)", 
+              backgroundColor: "rgba(255, 255, 255, 0.05)", 
+              borderRadius: "var(--radius-md)",
+              fontSize: "0.9rem",
+              color: "var(--text-tertiary)",
+              borderLeft: "3px solid var(--primary-light)"
+            }}>
+              Run: +1 point for passing visible test cases. Submit: +10 points per hidden test case passed.
+            </div>
+          </div>
+        </div>
+
+        {/* 2x2 editors grid */}
+        <div className="editors-grid">
+          {Array.from({ length: 4 }).map((_, idx) => {
+            const player = players[idx];
+
+            return (
+              <div
+                key={player?.socketId || idx}
+                className="editor-container"
+              >
+                <div className="editor-header">
+                  {player ? (
+                    <>
+                      {player.username}
+                      {player.socketId === socket.id && " (You)"}
+                      <span className="editor-score">
+                        {scores[player?.socketId] ?? 0} pts
+                      </span>
+                    </>
+                  ) : (
+                    `Waiting for player ${idx + 1}...`
+                  )}
+                </div>
+
+                <div className="editor-body">
+                  {player ? (
+                    <>
+                      <CodeEditor
+                        code={playerEditors[player.socketId] || ""}
+                        onChange={(value) => handleCodeChange(player.socketId, value)}
+                        readOnly={player.socketId !== socket.id}
+                        language={player.socketId === socket.id ? language : language}
+                        style={{ width: "100%", height: "100%" }}
+                      />
+                    </>
+                  ) : (
+                    <div className="waiting-placeholder">
+                      Waiting for player...
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
