@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 
 function TestResultsPanel({ testResults, isSubmission }) {
-  const [expandedTests, setExpandedTests] = useState({});
-  
   if (!testResults || testResults.length === 0) {
     return null;
   }
+  const [expandedTests, setExpandedTests] = useState({});
 
   const passedCount = testResults.filter(test => test.passed).length;
   const totalCount = testResults.length;

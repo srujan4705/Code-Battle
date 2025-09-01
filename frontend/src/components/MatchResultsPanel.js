@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 
 function MatchResultsPanel({ matchResults }) {
-  const [showAllScores, setShowAllScores] = useState(false);
-  
   if (!matchResults || !matchResults.winners || matchResults.winners.length === 0) {
     return null;
   }
+  const [showAllScores, setShowAllScores] = useState(false);
 
   const { winners, challenge, scores } = matchResults;
   const isTie = winners.length > 1;

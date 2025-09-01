@@ -22,14 +22,14 @@ mongoose.connect(process.env.MONGO_URI)
   });
 
 const app = express();
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 app.use(express.json({ limit: "200kb" }));
 
 const server = http.createServer(app);
 
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST"],
   },
 });
@@ -515,6 +515,3 @@ app.post("/api/run", runLimiter, async (req, res) => {
 app.get("/", (req, res) => {
   res.send("Backend is running 🚀");
 });
-
-const PORT = 5000;
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
